@@ -4,6 +4,10 @@
 	margin: 0;
 	padding: 0;
 }
+header, section, footer{
+	margin-left: 6rem;
+	margin-right: 6rem;
+}
 header{
 	text-align: center;
 	padding-top: 1rem;
@@ -21,6 +25,7 @@ section{
 }
 .blog__entry{
 	margin-bottom: 3rem;
+	width: auto;
 }
 .entry__info{
 	display: inline-flex;
@@ -45,19 +50,30 @@ footer{
     border-top: .25rem solid darkgray;
 }
 @media only screen and (max-width: 1024px){
+	header, section, footer{
+	margin-left: 5.5rem;
+	margin-right: 5.5rem;
+}
 	section{
-		padding-left: 7rem;
-		padding-right: 7rem;
+		padding-left: 5rem;
+		padding-right: 5rem;
 	}
 }
 @media only screen and (max-width: 768px){
+	*{
+		word-break: break-word;
+	}
 	header{
 		padding-left: .5rem;
 		padding-right: .5rem;
+		margin-left: 1.5rem;
+		margin-right: 1.5rem;
 	}
 	section{
-		padding-left: 5rem;
-    	padding-right: 5rem;
+		padding-left: 2rem;
+    	padding-right: 2rem;
+    	margin-left: 1.5rem;
+		margin-right: 1.5rem;
 	}
 	.entry__info{
 		display: none;
@@ -72,16 +88,21 @@ footer{
 	footer{
 		display: block;
 		text-align: center;
+		margin-left: 1.5rem;
+		margin-right: 1.5rem;
 	}
 }
 
 @media only screen and (max-width: 425px){
-	*{
-		word-break: break-word;
+	header{
+		margin-left: 0rem;
+    	margin-right: 0rem;
 	}
 	section{
 		padding-left: 1rem;
     	padding-right: 1rem;
+    	margin-left: 0rem;
+    	margin-right: 0rem;
 	}
 	.entry__info{
 		display: none;
@@ -92,5 +113,9 @@ footer{
 	}
 	.entry__info__mobile h4{
 		padding-top: .25rem;
+	}
+	footer{
+		margin-left: 0rem;
+    	margin-right: 0rem;
 	}
 } 
