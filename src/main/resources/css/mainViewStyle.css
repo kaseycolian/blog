@@ -1,0 +1,19 @@
+body{
+	background-color: purple;
+}
+
+header{
+	background-color: blue;
+}
+section{
+	background-color: teal;
+}
+.blog__entry{
+	background-color: lightblue;
+}
+.entry__topic{
+	font-style: italic;
+}
+footer{
+	background-color: magenta;
+}
