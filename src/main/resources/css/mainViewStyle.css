@@ -4,9 +4,11 @@ body{
 
 header{
 	background-color: blue;
+	border-bottom: .25rem solid darkgrey;
 }
 section{
 	background-color: teal;
+	border-top: .25rem solid darkgrey;
 }
 .blog__entry{
 	background-color: lightblue;
@@ -16,4 +18,12 @@ section{
 }
 footer{
 	background-color: magenta;
+}
+@media only screen and (max-width: 425px){
+	h1{
+		font-size: 152%;
+	}
+	h3{
+		font-size: 105%;
+	}
 }
