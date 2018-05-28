@@ -16,6 +16,10 @@ section{
 .entry__topic{
 	font-style: italic;
 }
+.article__separator{
+	border-bottom: .2rem solid lightgrey;
+	padding-top: 4rem;
+}
 footer{
 	background-color: magenta;
 }

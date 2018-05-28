@@ -15,7 +15,7 @@ header h3{
 section{
     display: grid;
     grid-template-rows: repeat(3, auto);
-    margin-top: 2rem;
+    margin-top: 3rem;
     padding-left: 8rem;
     padding-right: 8rem;
 }
@@ -25,7 +25,7 @@ section{
 .entry__info{
 	display: inline-flex;
 	padding-top: .5rem;
-	padding-bottom: .5rem;	
+	padding-bottom: 1.75rem;	
 }
 .entry__info__mobile{
 	display: none;
@@ -43,6 +43,7 @@ footer{
     position: relative;
     bottom: 0px;
     width: 100vw;
+    border-top: .25rem solid darkgray;
 }
 @media only screen and (max-width: 1024px){
 	section{
