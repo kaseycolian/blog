@@ -8,3 +8,30 @@
 body{
 	background-color: purple;
 }
+header{
+	background-color: blue;
+	text-align: center;
+	padding-bottom: 1rem;
+}
+section{
+	background-color: teal;
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    margin-top: 2rem;
+    margin-left: 4rem;
+    margin-right: 4rem;
+}
+.blog__entry{
+	background-color: lightblue;
+	margin-bottom: 3rem;
+}
+footer{
+	background-color: magenta;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-right: .5rem;
+    padding-left: .5rem;
+}
+
