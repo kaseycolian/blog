@@ -42,7 +42,6 @@ footer{
     padding-left: .5rem;
     position: relative;
     bottom: 0px;
-    width: 100vw;
     border-top: .25rem solid darkgray;
 }
 @media only screen and (max-width: 1024px){
