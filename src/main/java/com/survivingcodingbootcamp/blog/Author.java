@@ -1,7 +1,14 @@
 package com.survivingcodingbootcamp.blog;
 
-public class Author {
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
+public class Author {
+	
+	@Id
+	@GeneratedValue
+	private long id;
+	
 	private String authorName;
 
 	public Author(String authorName) {
