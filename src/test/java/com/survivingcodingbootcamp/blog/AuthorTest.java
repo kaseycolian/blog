@@ -7,9 +7,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-//@DataJpaTest
 public class AuthorTest {
-	
 	
 	@Resource
 	private AuthorRepository authorRepo;
@@ -17,10 +15,7 @@ public class AuthorTest {
 	@Test
 	public void shouldCreateAuthor() {
 		Author author = new Author("Joe");
-//		author = authorRepo.save(author);
-		long authorId = author.getId();
 		
-//		author = author.findOne(authorId);
 		assertThat(author.getAuthorName(), is("Joe"));
 		}
 	
