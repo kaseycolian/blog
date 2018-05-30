@@ -14,6 +14,10 @@ public class AuthorTest {
 		Author author = new Author();
 		author = authorRepo.save(author);
 		long authorId = author.getId();
+		
+		author = author.findOne(authorId);
+		
+		
 	}
 	
 }

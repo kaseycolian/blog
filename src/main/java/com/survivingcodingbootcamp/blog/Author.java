@@ -7,4 +7,9 @@ public class Author {
 		return 0;
 	}
 
+	public Author findOne(long authorId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
