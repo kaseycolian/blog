@@ -6,7 +6,7 @@ public class AuthorTest {
 	
 	@Test
 	public void shouldCreateAuthor() {
-		
+		Author author = new Author();
 	}
 	
 }
