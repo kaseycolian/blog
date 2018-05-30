@@ -13,6 +13,7 @@ public class AuthorTest {
 	public void shouldCreateAuthor() {
 		Author author = new Author();
 		author = authorRepo.save(author);
+		long authorId = author.getId();
 	}
 	
 }
