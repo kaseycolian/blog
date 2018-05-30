@@ -17,7 +17,7 @@ public class AuthorTest {
 	@Test
 	public void shouldCreateAuthor() {
 		Author author = new Author("Joe");
-		author = authorRepo.save(author);
+//		author = authorRepo.save(author);
 		long authorId = author.getId();
 		
 //		author = author.findOne(authorId);
