@@ -6,9 +6,8 @@ import static org.junit.Assert.assertThat;
 import javax.annotation.Resource;
 
 import org.junit.Test;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@DataJpaTest
+//@DataJpaTest
 public class AuthorTest {
 	
 	

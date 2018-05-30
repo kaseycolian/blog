@@ -1,7 +1,9 @@
 package com.survivingcodingbootcamp.blog;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface AuthorRepository extends CrudRepository<Author, Long>{
+@Repository
+public interface AuthorRepository extends CrudRepository<Author, Long> {
 
 }
