@@ -17,8 +17,7 @@ public class Author {
 
 
 	public Object getAuthorName() {
-		// TODO Auto-generated method stub
-		return null;
+		return authorName;
 	}
 
 	public Author findOne(long authorId) {
