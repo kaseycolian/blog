@@ -17,7 +17,7 @@ public class AuthorTest {
 	public void shouldCreateAuthor() {
 		Author author = new Author("Joe");
 //		author = authorRepo.save(author);
-//		long authorId = author.getId();
+		long authorId = author.getId();
 		
 //		author = author.findOne(authorId);
 		assertThat(author.getAuthorName(), is("Joe"));

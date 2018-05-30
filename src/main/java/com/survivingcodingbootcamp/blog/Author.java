@@ -1,10 +1,13 @@
 package com.survivingcodingbootcamp.blog;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 public class Author {
 	
-//	@Id
-//	@GeneratedValue
-//	private long id;
+	@Id
+	@GeneratedValue
+	private long id;
 	
 	private String authorName;
 
@@ -13,17 +16,17 @@ public class Author {
 	}
 	
 	
-//	public long getId() {
-//		return id;
-//	}
+	public long getId() {
+		return id;
+	}
 
 
 	public Object getAuthorName() {
 		return authorName;
 	}
 
-	public Author findOne(long authorId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	public Author findOne(long authorId) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 }
