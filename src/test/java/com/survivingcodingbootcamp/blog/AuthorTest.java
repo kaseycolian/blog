@@ -10,10 +10,11 @@ public class AuthorTest {
 	private Author underTest;
 	
 	private String FIRSTNAME = "Joe";
+	private String LASTNAME = "Smuckatelli";
 
 	@Before
 	public void setup() {
-		underTest = new Author(FIRSTNAME);
+		underTest = new Author(FIRSTNAME, LASTNAME);
 	}
 	
 	@Test

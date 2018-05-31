@@ -3,10 +3,12 @@ package com.survivingcodingbootcamp.blog;
 public class Author {
 
 	private String authorFirstName;
+	private String authorLastName;
 	
 		
-	public Author(String authorFirstName) {
+	public Author(String authorFirstName, String authorLastName) {
 		this.authorFirstName = authorFirstName;
+		this.authorLastName = authorLastName;
 	}
 
 	public String getAuthorFirstName() {
@@ -14,7 +16,7 @@ public class Author {
 	}
 
 	public String getAuthorLastName() {
-		return null;
+		return authorLastName;
 	}
 
 }
