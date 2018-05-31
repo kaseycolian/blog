@@ -9,7 +9,7 @@ import org.junit.Test;
 public class AuthorTest {
 	private Author underTest;
 	
-	private String FIRSTNAME = "firstName";
+	private String FIRSTNAME = "Joe";
 
 	@Before
 	public void setup() {
