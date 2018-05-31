@@ -27,5 +27,10 @@ public class AuthorTest {
 		assertEquals("Joe", check);
 	}
 	
+	@Test
+	public void shouldReturnAuthorLastName() {
+		String check = underTest.getAuthorLastName();
+		
+	}
 	
 }
