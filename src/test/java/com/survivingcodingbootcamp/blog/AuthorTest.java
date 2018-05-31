@@ -7,10 +7,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class AuthorTest {
+	
 	private Author underTest;
 	
 	private String FIRSTNAME = "authorFirstName";
-	private String LASTNAME = "Smuckatelli";
+	private String LASTNAME = "authorLastName";
 
 	@Before
 	public void setup() {
@@ -31,7 +32,6 @@ public class AuthorTest {
 	@Test
 	public void shouldReturnAuthorLastName() {
 		String check = underTest.getAuthorLastName();
-		assertEquals(check, "Smuckatelli");
+		assertEquals(check, "authorLastName");
 	}
-	
 }
