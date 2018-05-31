@@ -9,7 +9,7 @@ import org.junit.Test;
 public class AuthorTest {
 	private Author underTest;
 	
-	private String FIRSTNAME = "Joe";
+	private String FIRSTNAME = "authorFirstName";
 	private String LASTNAME = "Smuckatelli";
 
 	@Before
@@ -25,7 +25,7 @@ public class AuthorTest {
 	@Test
 	public void shouldReturnAuthorFirstName() {
 		String check = underTest.getAuthorFirstName();
-		assertEquals("Joe", check);
+		assertEquals("authorFirstName", check);
 	}
 	
 	@Test
