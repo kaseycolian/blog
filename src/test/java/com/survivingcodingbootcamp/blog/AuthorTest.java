@@ -30,7 +30,7 @@ public class AuthorTest {
 	@Test
 	public void shouldReturnAuthorLastName() {
 		String check = underTest.getAuthorLastName();
-		
+		assertEquals(check, "Smuckatelli");
 	}
 	
 }
