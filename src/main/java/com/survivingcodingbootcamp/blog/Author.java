@@ -2,11 +2,15 @@ package com.survivingcodingbootcamp.blog;
 
 public class Author {
 
-	public String getAuthorFirstName() {
-		// TODO Auto-generated method stub
-		return null;
+	private String authorFirstName;
+	
+		
+	public Author(String authorFirstName) {
+		this.authorFirstName = authorFirstName;
 	}
 
-
+	public String getAuthorFirstName() {
+		return authorFirstName;
+	}
 
 }

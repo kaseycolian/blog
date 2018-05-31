@@ -8,10 +8,12 @@ import org.junit.Test;
 
 public class AuthorTest {
 	private Author underTest;
+	
+	private String FIRSTNAME = "firstName";
 
 	@Before
 	public void setup() {
-		underTest = new Author();
+		underTest = new Author(FIRSTNAME);
 	}
 	
 	@Test
@@ -24,5 +26,6 @@ public class AuthorTest {
 		String check = underTest.getAuthorFirstName();
 		assertEquals("Joe", check);
 	}
+	
 	
 }
