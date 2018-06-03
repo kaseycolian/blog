@@ -3,6 +3,10 @@ package com.survivingcodingbootcamp.blog;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 import org.junit.Test;
 
 public class BlogPostTest {
@@ -30,4 +34,13 @@ public class BlogPostTest {
 
 	}
 
+	@Test
+	public void shouldRecordTheDateOfCreation() {
+		BlogPost underTest = new BlogPost(CONTENT, AUTHOR, TITLE);
+		LocalDateTime testTime = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
+		String assertedTestTime = testTime.format(formatter);
+		String underTestCreationTime = underTest.getCreationDate().format(formatter);
+		assertThat(underTestCreationTime, is(assertedTestTime));
+	}
 }
