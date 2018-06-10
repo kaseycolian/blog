@@ -1,6 +1,9 @@
 package com.survivingcodingbootcamp.blog;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class BlogPost {
 
@@ -8,6 +11,7 @@ public class BlogPost {
 	private Author author;
 	private String title;
 	private LocalDateTime dateOfCreation;
+	private Set<String> topicNames = new HashSet<String>();
 
 	public BlogPost(String content, Author author, String title) {
 		this.content = content;
@@ -30,6 +34,14 @@ public class BlogPost {
 
 	public LocalDateTime getCreationDate() {
 		return dateOfCreation;
+	}
+
+	public void addTopic(String topicName) {
+		topicNames.add(topicName);
+	}
+
+	public Set<String> getTopics() {
+		return topicNames;
 	}
 
 }
