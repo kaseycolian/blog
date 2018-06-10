@@ -1,0 +1,45 @@
+body{
+	background-color: white;
+}
+
+header{
+	font-family: 'Noto Serif', serif;
+	background-color: blue;
+	border-bottom: .25rem solid darkgrey;
+}
+h2{
+	font-family: 'Prociono', serif;
+}
+h4{
+	font-family: 'Josefin Slab', serif;
+}
+p{
+	font-family: 'Arvo', serif;
+}
+section{
+	background-color: teal;
+	border-top: .25rem solid darkgrey;
+}
+.blog__entry{
+	background-color: lightblue;
+}
+.entry__topic{
+	font-style: italic;
+}
+.article__separator{
+	border-bottom: .2rem solid lightgrey;
+	padding-top: 4rem;
+}
+footer{
+	background-color: magenta;
+}
+@media only screen and (max-width: 425px){
+	h1{
+		font-size: 152%;
+	}
+	
+	h3{
+		font-size: 105%;
+	}
+
+}
