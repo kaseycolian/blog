@@ -1,4 +1,4 @@
-const setupEventListeners = function(){
+const setupEventListeners = () =>{
 	const DOMStrings = {
 		title: '.entry__title'
 	}
@@ -6,7 +6,7 @@ const setupEventListeners = function(){
 	const titles = document.querySelectorAll(DOMStrings.title);
 
 	for (let i = 0; i<titles.length; i++){
-		titles[i].addEventListener('click', function(event){
+		titles[i].addEventListener('click', (event) => {
 			console.log('clicked');
 		})
 	}
