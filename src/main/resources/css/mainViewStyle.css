@@ -1,7 +1,9 @@
+*{
+}
 body{
 	background-color: white;
+	cursor: default;
 }
-
 header{
 	font-family: 'Noto Serif', serif;
 	background-color: blue;
@@ -22,6 +24,9 @@ section{
 }
 .blog__entry{
 	background-color: lightblue;
+}
+.entry__title{
+	cursor: pointer;
 }
 .entry__topic{
 	font-style: italic;
