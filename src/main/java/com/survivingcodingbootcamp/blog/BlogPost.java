@@ -2,7 +2,6 @@ package com.survivingcodingbootcamp.blog;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class BlogPost {
@@ -19,6 +18,9 @@ public class BlogPost {
 		this.title = title;
 		dateOfCreation = LocalDateTime.now();
 	}
+
+	public BlogPost() {
+	};
 
 	public String getContent() {
 		return content;
