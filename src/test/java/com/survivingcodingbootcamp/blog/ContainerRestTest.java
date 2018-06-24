@@ -22,7 +22,7 @@ public class ContainerRestTest {
 
 	@Test
 	public void exampleTest() {
-		ResponseEntity<String> response = restTemplate.getForEntity("/blogposts", String.class);
+		ResponseEntity<String> response = restTemplate.getForEntity("/api/blogPosts", String.class);
 		HttpStatus status = response.getStatusCode();
 		assertThat(status, is(HttpStatus.OK));
 	}

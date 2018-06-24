@@ -1,16 +1,24 @@
 package com.survivingcodingbootcamp.blog;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class BlogPost {
-
+	@GeneratedValue
+	@Id
+	private Long id;
 	private String content;
+	@ManyToOne
 	private Author author;
 	private String title;
 	private LocalDateTime dateOfCreation;
-	private Set<String> topicNames = new HashSet<String>();
+	// @OneToMany
+	// private Collection<String> topicNames = new HashSet<String>();
 
 	public BlogPost(String content, Author author, String title) {
 		this.content = content;
@@ -20,7 +28,11 @@ public class BlogPost {
 	}
 
 	public BlogPost() {
-	};
+	}
+
+	public Long getId() {
+		return id;
+	}
 
 	public String getContent() {
 		return content;
@@ -38,12 +50,12 @@ public class BlogPost {
 		return dateOfCreation;
 	}
 
-	public void addTopic(String topicName) {
-		topicNames.add(topicName);
-	}
-
-	public Set<String> getTopics() {
-		return topicNames;
-	}
+	// public void addTopic(String topicName) {
+	// topicNames.add(topicName);
+	// }
+	//
+	// public Collection<String> getTopics() {
+	// return topicNames;
+	// }
 
 }
