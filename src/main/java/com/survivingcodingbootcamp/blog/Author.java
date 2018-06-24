@@ -7,11 +7,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Author {
 
 	private String authorFirstName;
 	private String authorLastName;
+	@JsonIgnore
 	@OneToMany(mappedBy = "author")
 	private Collection<BlogPost> blogPosts;
 
