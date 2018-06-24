@@ -23,6 +23,9 @@ public class Author {
 	@Id
 	private Long id;
 
+	public Author() {
+	}
+
 	public Author(String authorFirstName, String authorLastName) {
 		this.authorFirstName = authorFirstName;
 		this.authorLastName = authorLastName;
