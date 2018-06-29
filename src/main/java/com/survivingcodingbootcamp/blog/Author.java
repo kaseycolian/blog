@@ -1,11 +1,34 @@
 package com.survivingcodingbootcamp.blog;
 
+import java.util.Collection;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
 public class Author {
 
 	private String authorFirstName;
 	private String authorLastName;
-	
-		
+	@JsonIgnore
+	@OneToMany(mappedBy = "author")
+	private Collection<BlogPost> blogPosts;
+
+	public Collection<BlogPost> getBlogPosts() {
+		return blogPosts;
+	}
+
+	@GeneratedValue
+	@Id
+	private Long id;
+
+	public Author() {
+	}
+
 	public Author(String authorFirstName, String authorLastName) {
 		this.authorFirstName = authorFirstName;
 		this.authorLastName = authorLastName;
@@ -17,5 +40,9 @@ public class Author {
 
 	public String getAuthorLastName() {
 		return authorLastName;
+	}
+
+	public Long getId() {
+		return id;
 	}
 }
