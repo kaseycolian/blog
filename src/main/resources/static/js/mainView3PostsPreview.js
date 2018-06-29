@@ -21,4 +21,4 @@
 // }
 
 
-const getNewPlan = () => fetch("/blogPost/" + blogID).then(res => res.json()).then(resJson => blogID = resJson.id)
+const getBlogs = () => fetch("/blogPost/");

@@ -16,6 +16,10 @@ const setupEventListeners = () =>{
 	for (const cur of titles){
 		cur.addEventListener('click', (event) =>{
 			console.log('clicked with For Of Loop in ES6');
+
+			//opening up individal blog in new window
+			let blogId = blogJsonData.id;
+			window.open(`/blogEntry/${blogId}`);
 		});
 	}
 }

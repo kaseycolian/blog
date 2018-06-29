@@ -1,0 +1,19 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "Surviving Coding Boot Camp Blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SurvivingCodingBootCamp/blog.git"
+  },
+  "author": "Ben, Rochelle, Willie, Kasey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SurvivingCodingBootCamp/blog/issues"
+  },
+  "homepage": "https://github.com/SurvivingCodingBootCamp/blog#readme"
+}
