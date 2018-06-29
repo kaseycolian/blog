@@ -1,3 +1,9 @@
+
+import num from './test';
+console.log(`This is the mainViewHanlders.js file from src directory`);
+console.log(`I imported ${num} from the test.js module and this is the mainViewHandlers.js file`);
+
+
 const setupEventListeners = () =>{
 	const DOMStrings = {
 		title: '.entry__title'

@@ -21,4 +21,6 @@
 // }
 
 
+console.log(`This is the mainView.js file from src directory.`);
+
 const getBlogs = () => fetch("/blogPost/");
