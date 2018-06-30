@@ -20,7 +20,7 @@ function getBlogs() {
 
 		function postBlogs() {		
 			const blogPosts = currentBlogs._embedded.blogPosts.reverse();
-			const reverseOrderBlogsToDisplay = blogPosts;
+			// const reverseOrderBlogsToDisplay = blogPosts;
 			
 
 			// const markup = () => { 
@@ -45,7 +45,7 @@ function getBlogs() {
 
 			if (blogPosts.length > 3) {
 
-				const displayedBlogs = reverseOrderBlogsToDisplay.slice(0, 3);	
+				const displayedBlogs = blogPosts.slice(0, 3);	
 				for (blogPost of displayedBlogs) {
 					const markup =  `
 						<article class = "blog__entry" id = "entry__one" dataset = "post_1">
@@ -74,7 +74,7 @@ function getBlogs() {
 				}	
 				
 			} else {
-				for (blogPost of reverseOrderBlogsToDisplay) {
+				for (blogPost of blogPosts) {
 					const markup =  `
 						<article class = "blog__entry" id = "entry__one" dataset = "post_1">
 							<div class = "entry__title">
