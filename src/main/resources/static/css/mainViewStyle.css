@@ -1,5 +1,9 @@
 *{
 }
+a{
+	cursor: pointer;
+	text-decoration: none;
+}
 body{
 	background-color: white;
 	cursor: default;
@@ -24,9 +28,6 @@ section{
 }
 .blog__entry{
 	background-color: lightblue;
-}
-.entry__title{
-	cursor: pointer;
 }
 .entry__topic{
 	font-style: italic;

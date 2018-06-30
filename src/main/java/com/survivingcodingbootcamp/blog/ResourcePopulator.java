@@ -41,7 +41,7 @@ public class ResourcePopulator implements CommandLineRunner {
 				+ "\r\n"
 				+ "And my cats were hungry.", 
 				johnnyTables, "My Life Right Meow", "Reality"));
-		blogPostRepo.save( new BlogPost(
+		blogPostRepo.save(new BlogPost(
 				"MEEEEEEEEEEEEEEOOOOOOOOoOoOoWWWWWWWWWWWWW MEEEEEEEEEEEEEEOOOOOOOOoOoOoWWWWWWWWWWWWW MEOW MEOW MEEEEEEEEEEEEEEOOOOOOOOoOoOoWWWWWWWWWWWWW  MEOW",
 				janeSmith, "Me-OW", "Cats"));
 	}
