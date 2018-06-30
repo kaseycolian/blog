@@ -28,7 +28,7 @@ public class BlogPostMvcTest {
 	@MockBean
 	BlogPostRepository blogPostRepo;
 	private static final Author TEST_AUTHOR = new Author("Joe", "Smith");
-	private static final BlogPost TEST_BLOG_POST = new BlogPost("Blah Blah Blah Blah", TEST_AUTHOR, "Blah Times");
+	private static final BlogPost TEST_BLOG_POST = new BlogPost("Blah Blah Blah Blah", TEST_AUTHOR, "Blah Times", "Blah Topic");
 
 	@Test
 	public void shouldRetrieveBlogPosts() throws Exception {

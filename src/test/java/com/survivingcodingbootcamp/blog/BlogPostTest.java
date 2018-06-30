@@ -13,24 +13,26 @@ public class BlogPostTest {
 	private static final String TITLE = "Test Title";
 	private static final Author AUTHOR = new Author("Joe", "Blob");
 	private static final String CONTENT = "Test Content";
+	private static final String TOPIC = "Test Topic";
 
 	private void assertTitle(BlogPost blogPost, String title) {
 		assertThat(blogPost.getTitle(), is(title));
 	}
 
-	BlogPost underTest = new BlogPost(CONTENT, AUTHOR, TITLE);
+	BlogPost underTest = new BlogPost(CONTENT, AUTHOR, TITLE, TOPIC);
 
 	@Test
-	public void shouldHaveContentAuthorAndTitle() {
+	public void shouldHaveContentAuthorAndTitleAndStringTopic() {
 		assertThat(underTest.getContent(), is(CONTENT));
 		assertThat(underTest.getAuthor(), is(AUTHOR));
 		assertTitle(underTest, TITLE);
+		assertThat(underTest.getTopic(), is(TOPIC));
 
 	}
 
 	@Test
 	public void shouldRecordTheDateOfCreation() {
-		BlogPost underTest = new BlogPost(CONTENT, AUTHOR, TITLE);
+		BlogPost underTest = new BlogPost(CONTENT, AUTHOR, TITLE, TOPIC);
 		LocalDateTime testTime = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
 		String assertedTestTime = testTime.format(formatter);

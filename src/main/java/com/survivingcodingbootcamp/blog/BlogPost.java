@@ -18,14 +18,16 @@ public class BlogPost {
 	@ManyToOne
 	private Author author;
 	private String title;
+	private String topic;
 	private LocalDateTime dateOfCreation;
 	// @OneToMany
 	// private Collection<String> topicNames = new HashSet<String>();
 
-	public BlogPost(String content, Author author, String title) {
+	public BlogPost(String content, Author author, String title, String topic) {
 		this.content = content;
 		this.author = author;
 		this.title = title;
+		this.topic = topic;
 		dateOfCreation = LocalDateTime.now();
 	}
 
@@ -47,7 +49,9 @@ public class BlogPost {
 	public String getTitle() {
 		return title;
 	}
-
+	public String getTopic() {
+		return topic;
+	}
 	public LocalDateTime getCreationDate() {
 		return dateOfCreation;
 	}

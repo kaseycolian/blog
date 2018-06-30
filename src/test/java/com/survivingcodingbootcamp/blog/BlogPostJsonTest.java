@@ -19,6 +19,7 @@ public class BlogPostJsonTest {
 	private static final String TITLE = "Test Title";
 	private static final Author AUTHOR = new Author("Joe", "Blob");
 	private static final String CONTENT = "Test Content";
+	private static final String TOPIC = "Test Topic";
 
 	@Resource
 	private JacksonTester<BlogPost> blogPostJson;
@@ -26,7 +27,7 @@ public class BlogPostJsonTest {
 	// public BlogPost(String content, Author author, String title)
 	@Test
 	public void shouldSerialize() throws IOException {
-		BlogPost blogPost = new BlogPost(CONTENT, AUTHOR, TITLE);
+		BlogPost blogPost = new BlogPost(CONTENT, AUTHOR, TITLE, TOPIC);
 		JsonContent<BlogPost> content = blogPostJson.write(blogPost);
 
 		assertThat(content).extractingJsonPathValue("@.title").isEqualTo(TITLE);
