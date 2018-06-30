@@ -36,6 +36,11 @@ public class ResourcePopulator implements CommandLineRunner {
 						+ "\r\n"
 						+ "An sincerity so extremity he additions. Her yet there truth merit. Mrs all projecting favourable now unpleasing. Son law garden chatty temper. Oh children provided to mr elegance marriage strongly. Off can admiration prosperous now devonshire diminution law. ",
 				johnnyTables, "Way nor"));
+		blogPostRepo.save(new BlogPost(
+				"I was like this is cool and confusing. \r\n"
+				+ "\r\n"
+				+ "And my cats were hungry.", 
+				johnnyTables, "My Life Right Meow"));
 	}
 
 }

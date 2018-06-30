@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("// function loadDoc(){\r\n\r\n// const xhr = new XMLHttpRequest();\r\n// xhr.onready = () => {\r\n\r\n// \tif (xhr.status === 404){\r\n// \t\tconst notFoundRes = JSON.parse(xhr.responseText);\r\n// \t\tconsole.log(notFoundRes);\r\n// \t\twindow.alert(\"nothing to load!\");\r\n// \t}\r\n\r\n// \tif (xhr.status === 200) {\r\n// \t\tconsole.log(loaded);\r\n// \t\tconst res = JSON.parse(xhr.responseText);\r\n// \t}\r\n\r\n// \txhr.open('GET', '/blogPost' + blogId, true);\r\n// \txhr.send();\r\n\r\n// \t}\r\n// }\r\n\r\n\r\nconst getBlogs = () => fetch(\"/blogPost/\");\n\n//# sourceURL=webpack:///./src/main/resources/js/mainView.js?");
+eval("// function loadDoc(){\r\n\r\n// const xhr = new XMLHttpRequest();\r\n// xhr.onready = () => {\r\n\r\n// \tif (xhr.status === 404){\r\n// \t\tconst notFoundRes = JSON.parse(xhr.responseText);\r\n// \t\tconsole.log(notFoundRes);\r\n// \t\twindow.alert(\"nothing to load!\");\r\n// \t}\r\n\r\n// \tif (xhr.status === 200) {\r\n// \t\tconsole.log(loaded);\r\n// \t\tconst res = JSON.parse(xhr.responseText);\r\n// \t}\r\n\r\n// \txhr.open('GET', '/blogPost' + blogId, true);\r\n// \txhr.send();\r\n\r\n// \t}\r\n// }\r\n\r\n\r\nconsole.log(`This is the mainView.js file from src directory.`);\r\n\r\n// const getBlogs = () => fetch(\"/blogPost/\");\n\n//# sourceURL=webpack:///./src/main/resources/js/mainView.js?");
 
 /***/ }),
 
@@ -104,7 +104,7 @@ eval("// function loadDoc(){\r\n\r\n// const xhr = new XMLHttpRequest();\r\n// x
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("\n\n//# sourceURL=webpack:///./src/main/resources/js/mainViewCalls.js?");
+eval("throw new Error(\"Module parse failed: Unexpected token (8:18)\\nYou may need an appropriate loader to handle this file type.\\n| \\theader.addEventListener('click', function(){\\r\\n| \\r\\n> \\t\\tasync getResults() {\\r\\n| \\r\\n| \\r\");\n\n//# sourceURL=webpack:///./src/main/resources/js/mainViewCalls.js?");
 
 /***/ }),
 
@@ -116,7 +116,7 @@ eval("\n\n//# sourceURL=webpack:///./src/main/resources/js/mainViewCalls.js?");
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _test__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./test */ \"./src/main/resources/js/test.js\");\n\r\n\r\n\r\nconsole.log(`I imported ${_test__WEBPACK_IMPORTED_MODULE_0__[\"default\"]} from the test.js module`);\r\n\r\n\r\nconst setupEventListeners = () =>{\r\n\tconst DOMStrings = {\r\n\t\ttitle: '.entry__title'\r\n\t} \r\n\r\n\tconst titles = document.querySelectorAll(DOMStrings.title);\r\n\t//regular For Each Loop\r\n\t/*\r\n\tfor (let i = 0; i<titles.length; i++){\r\n\t\ttitles[i].addEventListener('click', (event) => {\r\n\t\t\tconsole.log('clicked');\r\n\t\t});\r\n\t}\r\n\t*/\r\n\t//For Of Loop (ES6)\r\n\tfor (const cur of titles){\r\n\t\tcur.addEventListener('click', (event) =>{\r\n\t\t\tconsole.log('clicked with For Of Loop in ES6');\r\n\r\n\t\t\t//opening up individal blog in new window\r\n\t\t\tlet blogId = blogJsonData.id;\r\n\t\t\twindow.open(`/blogEntry/${blogId}`);\r\n\t\t});\r\n\t}\r\n}\r\n\r\nsetupEventListeners();\n\n//# sourceURL=webpack:///./src/main/resources/js/mainViewHandlers.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _test__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./test */ \"./src/main/resources/js/test.js\");\n\r\n\r\nconsole.log(`This is the mainViewHanlders.js file from src directory`);\r\nconsole.log(`I imported ${_test__WEBPACK_IMPORTED_MODULE_0__[\"default\"]} from the test.js module and this is the mainViewHandlers.js file`);\r\n\r\n\r\nconst setupEventListeners = () =>{\r\n\tconst DOMStrings = {\r\n\t\ttitle: '.entry__title'\r\n\t} \r\n\r\n\tconst titles = document.querySelectorAll(DOMStrings.title);\r\n\t//regular For Each Loop\r\n\t/*\r\n\tfor (let i = 0; i<titles.length; i++){\r\n\t\ttitles[i].addEventListener('click', (event) => {\r\n\t\t\tconsole.log('clicked');\r\n\t\t});\r\n\t}\r\n\t*/\r\n\t//For Of Loop (ES6)\r\n\tfor (const cur of titles){\r\n\t\tcur.addEventListener('click', (event) =>{\r\n\t\t\tconsole.log('clicked with For Of Loop in ES6');\r\n\r\n\t\t\t//opening up individal blog in new window\r\n\t\t\tlet blogId = blogJsonData.id;\r\n\t\t\twindow.open(`/blogEntry/${blogId}`);\r\n\t\t});\r\n\t}\r\n}\r\n\r\nsetupEventListeners();\n\n//# sourceURL=webpack:///./src/main/resources/js/mainViewHandlers.js?");
 
 /***/ }),
 
@@ -128,7 +128,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _tes
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n\r\n\r\n\r\n\r\n\r\n\r\nconsole.log('Imported from test.js');\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (23);\n\n//# sourceURL=webpack:///./src/main/resources/js/test.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n\r\n\r\n\r\n\r\n\r\n\r\nconsole.log('Imported from test.js into mainViewHandlers.js');\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (999999999);\n\n//# sourceURL=webpack:///./src/main/resources/js/test.js?");
 
 /***/ }),
 
