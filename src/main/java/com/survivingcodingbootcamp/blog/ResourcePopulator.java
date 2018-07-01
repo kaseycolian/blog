@@ -41,5 +41,11 @@ public class ResourcePopulator implements CommandLineRunner {
 				+ "\r\n"
 				+ "And my cats were hungry.", 
 				johnnyTables, "My Life Right Meow", "Reality"));
+		blogPostRepo.save(new BlogPost(
+				"I just need some more filler. meow blah meow blah. I just need some more filler. meow blah meow blah. I just need some more filler. meow blah meow blah. I just need some more filler. meow blah meow blah. I just need some more filler. meow blah meow blah.", janeSmith, "Filler", "Success"
+				));
+		blogPostRepo.save(new BlogPost(
+				"This laptop sucks with this IDE.", johnnyTables, "Lametop", "TechTools"
+				));
 	}
 }
