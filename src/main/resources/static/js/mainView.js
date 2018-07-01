@@ -1,5 +1,3 @@
-// function loadDoc(){
-
 // const xhr = new XMLHttpRequest();
 // xhr.onready = () => {
 
@@ -21,6 +19,3 @@
 // }
 
 
-console.log(`This is the mainView.js file from src directory.`);
-
-// const getBlogs = () => fetch("/blogPost/");
