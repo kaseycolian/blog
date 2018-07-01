@@ -26,6 +26,10 @@ section{
 	background-color: teal;
 	border-top: .25rem solid darkgrey;
 }
+.btn-inline > img{
+	height: 5rem;
+	width: 5rem;
+}
 .blog__entry{
 	background-color: lightblue;
 }

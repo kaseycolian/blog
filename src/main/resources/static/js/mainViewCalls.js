@@ -73,27 +73,41 @@ const renderBlogPosts = blogPost => {
 const createPageButton = (page, type) => `
 	<button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
         <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
-        <svg class="search__icon">
-            <use href="./images/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right'}"></use>
-        </svg>   
+        <img class="search__icon"
+            src="./images/${type === 'prev' ? 'left-' : 'right-'}arrows.svg">
+        </img>   
     </button>
 `;
+
+const currentPage = (page) => `
+	<div class = current-page>
+		<h4>Current Page: ${page}</h4>
+	</div>
+
+`
 
 const renderPageButtons = (page, numPosts, postsPerPage) => {
 	const pages = Math.ceil(numPosts/postsPerPage);
 	let pageButton;
 
 	if (page === 1 && pages > 1) {
-		pageButton = createPageButton(page, 'next')
-		pageButton = createPageButton(page, 'pext');
+		pageButton = `
+			${currentPage(page)}</span>
+			${pageButton = createPageButton(page, 'next')}
+		`
+		// pageButton = createPageButton(page, 'pext');
 	} else if (page < pages) {
 		pageButton = `
 			${createPageButton(page, 'next')}
+			${currentPage(page)}
 			${createPageButton(page, 'prev')}
 
 		`;
 	} else if (page === pages && page > 1) {
-		pageButton = createPageButton(page, 'prev');
+		pageButton = `
+			${currentPage(page)}
+			${pageButton = createPageButton(page, 'prev')};
+		`
 	}
 
 	querySelected.blogSection.insertAdjacentHTML('afterbegin', pageButton);
