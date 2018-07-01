@@ -35,12 +35,13 @@ const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 3) => {
 
 	const end = page * postsPerPage;
 
-	blogPosts.slice(start, end).forEach(renderBlogEntries);
+	blogPosts.slice(start, end).forEach(renderBlogPosts);
 
 };
 
 
-const renderBlogEntries = blogPost => {
+const renderBlogPosts = blogPost => {
+	console.log(blogPost);
 	const markup =  `
 						<article class = "blog__entry" id = "entry__one" dataset = "post_1">
 							<div class = "entry__title">
