@@ -4,7 +4,9 @@ const querySelected = {
 	title: document.querySelector('.entry__title'),
 	allTitles: document.querySelectorAll('.title'),
 	blogSection: document.querySelector('section'),
-	header: document.querySelector('.headerH1')
+	header: document.querySelector('.headerH1'),
+	pageNumberNavigation: document.querySelector('.inline-pageNumbers'),
+	navBar: document.querySelector('nav')
 } 
 
 function getBlogs() {
@@ -73,7 +75,27 @@ const createPageButton = (page, type) => `
     </button>
 `;
 
-const createPageNumberList = (page) =>  `
+//To Display Page Number List:
+		// Take all page count: this.blogPost
+		// Take current page in renderBlogPagination()
+		//pass into renderBlogPagination
+
+// const currentPageDisplay = (page) => `
+// 	<div class = current-page>
+// 		<h4>Current Page: ${page}</h4>
+// 	</div>
+// `;
+
+const clearPageResultsBeforeLoadingNewPage = () => {
+	//this will also clear out the buttons until buttons get moved to different div from posts
+	querySelected.blogSection.innerHTML = '';
+	//clearing out nav page List for next page buttons & page List clicks:
+	querySelected.navBar.innerHTML = '';
+}
+
+const createPageNumberList = (page, pages) =>  
+// for (page of pages)
+	`
 	<div class = "inline-pageNumbers">
 		<div class = "page__numbers" data-goto=${page}>page: ${page}</div>
 		<div class = "page__numbers" data-goto=${page + 1}>${page + 1}</div>
@@ -82,26 +104,6 @@ const createPageNumberList = (page) =>  `
 		<div class = "page__numbers" data-goto=${page + 4}>${page + 4}</div>
 	</div>	
 `;
-
-//To Display Page Number List:
-		// Take all page count: this.blogPost
-		// Take current page in renderBlogPagination()
-		//pass into renderBlogPagination
-
-
-
-const currentPageDisplay = (page) => `
-	<div class = current-page>
-		<h4>Current Page: ${page}</h4>
-	</div>
-`;
-
-const clearPageResultsBeforeLoadingNewPage = () => {
-	//this will also clear out the buttons until buttons get moved to different div from posts
-	querySelected.blogSection.innerHTML = '';
-	//clearing out buttons for next page buttons:
-}
-
 //takes in this.blogResult from fetch for all blogPosts returned from fetch
 //has variables to calculate pages, number of blogs per page and total posts
 //calculates posts per page
@@ -119,6 +121,33 @@ const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 2) => {
 
 };
 
+const renderPageList = (page, numPosts, postsPerPage) => {
+	let pageList;
+	let pageCount = 1;
+	const pages = Math.ceil(numPosts/postsPerPage);	
+	const allPages = new Array();
+
+	for (let i = 0; i<pages; i++){
+			allPages[i] = pageCount;
+			pageCount++;
+	}
+	console.log(allPages);
+	for (cur of allPages.reverse()) {
+		if (cur === page ) {
+			const pageNumberDisplay = `
+			<div class = "page__numbers" id="active__page" data-goto=${cur}>${cur}</div>
+			`
+		querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
+		} else {
+			const pageNumberDisplay = `
+				<div class = "page__numbers" class = "inactive" data-goto=${cur}>${cur}</div>
+			`
+		querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
+		}
+		
+	}
+
+};
 
 //calculates pages with passed in arguments
 const renderPageButtons = (page, numPosts, postsPerPage) => {
@@ -127,55 +156,41 @@ const renderPageButtons = (page, numPosts, postsPerPage) => {
 	// let pageList;
 	if (page === 1 && pages > 1) {
 		pageButton = `
-			${currentPageDisplay(page)}</span>
+			
 			${pageButton = createPageButton(page, 'next')}
 		`
 		// pageButton = createPageButton(page, 'pext');
 	} else if (page < pages) {
 		pageButton = `
-			${currentPageDisplay(page)}
 			${createPageButton(page, 'next')}
 			${createPageButton(page, 'prev')}
 
 		`;
 	} else if (page === pages && page > 1) {
 		pageButton = `
-			${currentPageDisplay(page)}
 			${pageButton = createPageButton(page, 'prev')};
 		`
 	}
 	querySelected.blogSection.insertAdjacentHTML('afterbegin', pageButton);
 };
 
-const renderPageList = (page, numPosts, postsPerPage) => {
-	let pageList;
-	const pages = Math.ceil(numPosts/postsPerPage);
-
-	if (page === 1 && pages > 1) {
-		pageList = ` ${createPageNumberList(page)}
-		`;
-		querySelected.blogSection.insertAdjacentHTML('afterbegin', pageList);
-	}
-	
-};
-
-
-
 querySelected.blogSection.addEventListener('click', e => {
 	const pageButton = e.target.closest('.btn-inline');
-	const pageList = e.target.closest('.page__numbers');
 	if (pageButton) {
 		console.log(e);
 		const goToPage = parseInt(pageButton.dataset.goto, 10);
 		clearPageResultsBeforeLoadingNewPage();
 		renderBlogPagination(blogResult, goToPage);
 	}
+});
+
+querySelected.navBar.addEventListener('click', e => {
+	const pageList = e.target.closest('.page__numbers');
 	if (pageList) {
 		console.log(e);
 		const goToPage = parseInt(pageList.dataset.goto, 10);
 		clearPageResultsBeforeLoadingNewPage();
 		renderBlogPagination(blogResult, goToPage);
 	}
-});
-
+})
 getBlogs();

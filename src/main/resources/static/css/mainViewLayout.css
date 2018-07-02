@@ -16,12 +16,21 @@ header{
 header h3{
 	padding-top: .5rem;
 }
+nav{
+	display: inline-flex;
+	margin-left: 6rem;
+	margin-right: 6rem;
+}
 section{
     display: grid;
     grid-template-rows: repeat(3, auto);
     margin-top: 3rem;
     padding-left: 8rem;
     padding-right: 8rem;
+}
+.page__numbers{
+	padding-left: .5rem;
+	padding-right: .5rem;
 }
 .blog__entry{
 	margin-bottom: 3rem;
