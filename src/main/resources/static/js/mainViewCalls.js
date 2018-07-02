@@ -30,39 +30,32 @@ function getBlogs() {
 	.catch(function(error) {					
 			console.log(error);
 	})
-}
-
-const displayIndividualPageNumber = () => {
-	//Display number of pages, up to 5? with "..." at end.  Splice with current page in middle of display.
-	//page 5 display: ... 3 4 5 6 7 ...;
-
-	
 };
 
 const renderBlogPosts = blogPost => {
 	console.log(blogPost);
 	const markup =  `
-						<article class = "blog__entry" id = "entry__one" dataset = "post_1">
-							<div class = "entry__title">
-								<div class = "entry__link">
-									<a href = ${blogPost._links.blogPost.href} ><h2>${blogPost.title}</h2></a>
-								</div>
-							</div>
-							<div class = "entry__info">
-								<h4>${blogPost.creationDate} ~ ${blogPost._links.author.href} ~&nbsp</h4>
-								<h4 class = "entry__topic">${blogPost.topic}</h4>
-							</div>
-							<div class = "entry__info__mobile">
-								<h4>${blogPost.creationDate}</h4>
-								<h4>${blogPost._links.author.href}</h4>
-								<h4 class = "entry__topic">${blogPost.topic}</h4>
-							</div>
-							<p class = "entry__content">${blogPost.content}</p>
-							<div class = article__separator>
-							</div>
-						</article>
-					`;				
-		querySelected.blogSection.insertAdjacentHTML('beforeend', markup);
+		<article class = "blog__entry" id = "entry__one" dataset = "post_1">
+			<div class = "entry__title">
+				<div class = "entry__link">
+					<a href = ${blogPost._links.blogPost.href} ><h2>${blogPost.title}</h2></a>
+				</div>
+			</div>
+			<div class = "entry__info">
+				<h4>${blogPost.creationDate} ~ ${blogPost._links.author.href} ~&nbsp</h4>
+				<h4 class = "entry__topic">${blogPost.topic}</h4>
+			</div>
+			<div class = "entry__info__mobile">
+				<h4>${blogPost.creationDate}</h4>
+				<h4>${blogPost._links.author.href}</h4>
+				<h4 class = "entry__topic">${blogPost.topic}</h4>
+			</div>
+			<p class = "entry__content">${blogPost.content}</p>
+			<div class = article__separator>
+			</div>
+		</article>
+	`;				
+	querySelected.blogSection.insertAdjacentHTML('beforeend', markup);
 };
 
 //displays type of button that is passed through and displays page number for next && || previous page
@@ -75,35 +68,13 @@ const createPageButton = (page, type) => `
     </button>
 `;
 
-//To Display Page Number List:
-		// Take all page count: this.blogPost
-		// Take current page in renderBlogPagination()
-		//pass into renderBlogPagination
-
-// const currentPageDisplay = (page) => `
-// 	<div class = current-page>
-// 		<h4>Current Page: ${page}</h4>
-// 	</div>
-// `;
-
 const clearPageResultsBeforeLoadingNewPage = () => {
-	//this will also clear out the buttons until buttons get moved to different div from posts
+	//clears out the buttons & posts on current page when going to next page
 	querySelected.blogSection.innerHTML = '';
-	//clearing out nav page List for next page buttons & page List clicks:
+	//clears out nav pageList for next page's nav pageList
 	querySelected.navBar.innerHTML = '';
 }
 
-const createPageNumberList = (page, pages) =>  
-// for (page of pages)
-	`
-	<div class = "inline-pageNumbers">
-		<div class = "page__numbers" data-goto=${page}>page: ${page}</div>
-		<div class = "page__numbers" data-goto=${page + 1}>${page + 1}</div>
-		<div class = "page__numbers" data-goto=${page + 2}>${page + 2}</div>
-		<div class = "page__numbers" data-goto=${page + 3}>${page + 3}</div>
-		<div class = "page__numbers" data-goto=${page + 4}>${page + 4}</div>
-	</div>	
-`;
 //takes in this.blogResult from fetch for all blogPosts returned from fetch
 //has variables to calculate pages, number of blogs per page and total posts
 //calculates posts per page
@@ -118,58 +89,49 @@ const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 2) => {
 
 	renderPageButtons(page, blogPosts.length, postsPerPage);
 	renderPageList(page, blogPosts.length, postsPerPage);
-
 };
 
 const renderPageList = (page, numPosts, postsPerPage) => {
-	let pageList;
 	let pageCount = 1;
 	const pages = Math.ceil(numPosts/postsPerPage);	
 	const allPages = new Array();
 
-	for (let i = 0; i<pages; i++){
+	for (let i = 0; i < pages; i++) {
 			allPages[i] = pageCount;
 			pageCount++;
 	}
-	console.log(allPages);
+
 	for (cur of allPages.reverse()) {
 		if (cur === page ) {
 			const pageNumberDisplay = `
 			<div class = "page__numbers" id="active__page" data-goto=${cur}>${cur}</div>
 			`
-		querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
+			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 		} else {
 			const pageNumberDisplay = `
 				<div class = "page__numbers" class = "inactive" data-goto=${cur}>${cur}</div>
 			`
-		querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
+			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 		}
-		
 	}
-
 };
 
 //calculates pages with passed in arguments
 const renderPageButtons = (page, numPosts, postsPerPage) => {
 	const pages = Math.ceil(numPosts/postsPerPage);
 	let pageButton;
-	// let pageList;
+
 	if (page === 1 && pages > 1) {
-		pageButton = `
-			
-			${pageButton = createPageButton(page, 'next')}
-		`
-		// pageButton = createPageButton(page, 'pext');
+		pageButton = 			
+			createPageButton(page, 'next');
 	} else if (page < pages) {
 		pageButton = `
 			${createPageButton(page, 'next')}
 			${createPageButton(page, 'prev')}
-
 		`;
 	} else if (page === pages && page > 1) {
-		pageButton = `
-			${pageButton = createPageButton(page, 'prev')};
-		`
+		pageButton = 
+			createPageButton(page, 'prev');
 	}
 	querySelected.blogSection.insertAdjacentHTML('afterbegin', pageButton);
 };
@@ -177,7 +139,6 @@ const renderPageButtons = (page, numPosts, postsPerPage) => {
 querySelected.blogSection.addEventListener('click', e => {
 	const pageButton = e.target.closest('.btn-inline');
 	if (pageButton) {
-		console.log(e);
 		const goToPage = parseInt(pageButton.dataset.goto, 10);
 		clearPageResultsBeforeLoadingNewPage();
 		renderBlogPagination(blogResult, goToPage);
@@ -187,10 +148,10 @@ querySelected.blogSection.addEventListener('click', e => {
 querySelected.navBar.addEventListener('click', e => {
 	const pageList = e.target.closest('.page__numbers');
 	if (pageList) {
-		console.log(e);
 		const goToPage = parseInt(pageList.dataset.goto, 10);
 		clearPageResultsBeforeLoadingNewPage();
 		renderBlogPagination(blogResult, goToPage);
 	}
-})
+});
+
 getBlogs();
