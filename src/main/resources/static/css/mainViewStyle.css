@@ -26,6 +26,12 @@ section{
 	background-color: teal;
 	border-top: .25rem solid darkgrey;
 }
+.inline-pageNumbers{
+	display: inline-flex;
+}
+.page__numbers{
+	padding: .25rem;
+}
 .btn-inline > img{
 	height: 5rem;
 	width: 5rem;
