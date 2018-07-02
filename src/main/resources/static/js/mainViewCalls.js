@@ -79,7 +79,7 @@ const clearPageResultsBeforeLoadingNewPage = () => {
 //has variables to calculate pages, number of blogs per page and total posts
 //calculates posts per page
 //calculates current Page
-const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 2) => {
+const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 3) => {
 	console.log(blogPosts);
 	const start = (page-1) * postsPerPage;
 	const end = page * postsPerPage;
