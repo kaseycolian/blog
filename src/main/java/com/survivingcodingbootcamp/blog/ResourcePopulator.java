@@ -40,7 +40,7 @@ public class ResourcePopulator implements CommandLineRunner {
 				johnnyTables, "Way nor", "Denial"));
 		blogPostRepo.save(new BlogPost(
 				"I was like this is cool and confusing. \r\n"
-				+ "\r\n"
+				+ "\n \n"  + newline
 				+ "And my cats were hungry.", 
 				johnnyTables, "My Life Right Meow", "Reality"));
 		blogPostRepo.save(new BlogPost(
@@ -56,7 +56,7 @@ public class ResourcePopulator implements CommandLineRunner {
 				+ "leap into the air in greatest offense!. Sleep in the bathroom sink claws in your leg and stare out the window or cat snacks, or try to hold own back foot to clean it but foot reflexively kicks you in face, go into a rage and bite own foot, hard. Pee in the shoe jump off balcony, onto stranger's head for cough hairball, eat toilet paper stares at human while pushing stuff off a table yet spend all night ensuring people don't sleep sleep all day man running from cops stops to pet cats, goes to jail lick butt and make a weird face. Purr when being pet if it smells like fish eat as much as you wish or gnaw the corn cob"
 				+ " or making sure that fluff gets into the owner's eyes. I cry and cry and cry unless you pet me, and then maybe i cry just for fun.\n" + 
 				newline
-				 + "Ccccccccccccaaaaaaaaaaaaaaatttttttttttttttttssssssssssssssss. Cough spill litter box, scratch at owner, destroy all furniture, especially couch i like cats because they are fat and fluffy yet cough hairball on conveniently placed pants. Eat the rubberband. Grab pompom in mouth and put in water dish when owners are asleep, cry for no apparent reason. Suddenly go on wild-eyed crazy rampage favor packaging over toy. Pounce on unsuspecting person purr while eating eat prawns daintily with a claw then lick paws clean wash down prawns with a lap of carnation milk then retire to the warmest spot on the couch to claw at."
+				 + "Ccccccccaaaaaaaaaaatttttttssssssssssssssss. Cough spill litter box, scratch at owner, destroy all furniture, especially couch i like cats because they are fat and fluffy yet cough hairball on conveniently placed pants. Eat the rubberband. Grab pompom in mouth and put in water dish when owners are asleep, cry for no apparent reason. Suddenly go on wild-eyed crazy rampage favor packaging over toy. Pounce on unsuspecting person purr while eating eat prawns daintily with a claw then lick paws clean wash down prawns with a lap of carnation milk then retire to the warmest spot on the couch to claw at."
 				 + "the fabric before taking a catnap for put butt in owner's face and refuse to drink water except out of someone's glass allways wanting food scratch. ",
 				 johnnyTables, "Not Kitten Around", "Furballs"
 				));
