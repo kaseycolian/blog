@@ -31,13 +31,12 @@ function getBlogs() {
 	})
 };
 
-const splitString = (stringToSplit, separator) => {
+const renderDateAndTime = (stringToSplit, separator) => {
 		 const arrayOfStrings = stringToSplit.split(separator);
-		 console.log(arrayOfStrings);
+
 		 //this.date & this.time defines each markup when called in renderBlogPosts as this specific instance of date & time - removed const & added to edited date & time
 		 const date = arrayOfStrings[0];
 		 const timeUnedited = arrayOfStrings[1];
-
 		 //removes the milliseconds
 		 this.editedTime = timeUnedited.substring(0, timeUnedited.length-4);
 
@@ -45,14 +44,13 @@ const splitString = (stringToSplit, separator) => {
 		 const monthAndDay = date.substring(5, date.length);
 		 const year = date.substring(0, 4);
 		 this.editedDate = `${monthAndDay}-${year}`;
-		 console.log(editedTime);
 }
 
 const renderBlogPosts = blogPost => {
 	console.log(blogPost);
 	const T = 'T';
-	//only need to reference date & editedTime in markup from its variable in splitString();
-	const dateAndTime = splitString(blogPost.creationDate, T);
+	//only need to reference edidedDate & editedTime in markup from its variable in splitString();
+	const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
 
 	const markup =  `
 		<article class = "blog__entry" id = "entry__one" dataset = "post_1">
@@ -121,7 +119,7 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 	let pageCount = 1;
 	const pages = calculatePages(numPosts, postsPerPage);
 	const allPages = [];
-
+	//returns count of all pages in an Array of allPages
 	for (let i = 0; i < pages; i++) {
 			allPages[i] = pageCount;
 			pageCount++;
@@ -133,11 +131,11 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 	const firstPage = allPages.slice(0,1); //returns 1
 	const first4Pages = allPages.slice(0, 6); //returns 1, 2, 3, 4, 5
 	const lastPageDisplay = `
-					<div class = "page__numbers" class = "inactive" data-goto=${lastPage}>[...${lastPage}]</div>
-				`;
+		<div class = "page__numbers" class = "inactive" data-goto=${lastPage}>[...${lastPage}]</div>
+		`;
 	const firstPageToDisplay = 	 `
-					<div class = "page__numbers" class = "inactive" data-goto=${firstPage}>[${firstPage}...]</div>
-				`;		
+		<div class = "page__numbers" class = "inactive" data-goto=${firstPage}>[${firstPage}...]</div>
+		`;		
 	const addFirstPageDisplay = () => {
 		querySelected.navBar.insertAdjacentHTML('beforeend', firstPageToDisplay);
 	};
