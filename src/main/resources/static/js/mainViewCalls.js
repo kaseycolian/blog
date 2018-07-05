@@ -131,23 +131,21 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 	const thirdFromLastPage = allPages[allPages.length-3]; //returns 5
 	const firstPage = allPages.slice(0,1); //returns 1
 	const first4Pages = allPages.slice(0, 6); //returns 1, 2, 3, 4, 5
-	const lastPageDisplay = `
-		<div class = "page__numbers" class = "inactive" data-goto=${lastPage}>[...${lastPage}]</div>
-		`;
-	const firstPageToDisplay = 	 `
+	
+	const addFirstPageDisplay = () => {
+		const firstPageToDisplay = 	 `
 		<div class = "page__numbers" class = "inactive" data-goto=${firstPage}>[${firstPage}...]</div>
 		`;		
-	const addFirstPageDisplay = () => {
 		querySelected.navBar.insertAdjacentHTML('afterbegin', firstPageToDisplay);
 	};
 	const addLastPageDisplay = () => {
+		const lastPageDisplay = `
+		<div class = "page__numbers" class = "inactive" data-goto=${lastPage}>[...${lastPage}]</div>
+		`;
 		querySelected.navBar.insertAdjacentHTML('beforeend', lastPageDisplay);
-	}
-
-	//displays all pages if less than 5 total pages
-	if (allPages.length <= 5) { 
-		for (cur of allPages.reverse()){
-			if (cur === page ) {
+	};
+	const renderPageListLoop = () => {
+		if (cur === page ) {
 				const pageNumberDisplay = `
 				<div class = "page__numbers" id="active__page" data-goto=${cur}>${cur}</div>
 				`
@@ -158,21 +156,17 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 				`
 				querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 			}
+	};
+
+	//displays all pages if less than 5 total pages
+	if (allPages.length <= 5) { 
+		for (cur of allPages.reverse()){
+			renderPageListLoop();
 		}
 	} else if (allPages.length > 4 ) {
 		if (page < 4 && page != penultimatePage && page != lastPage) {
 			for (cur of first4Pages.reverse()) {
-				if (cur === page ) {
-					const pageNumberDisplay = `
-					<div class = "page__numbers" id="active__page" data-goto=${cur}>${cur}</div>
-					`
-					querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
-				} else {
-					const pageNumberDisplay = `
-						<div class = "page__numbers" class = "inactive" data-goto=${cur}>${cur}</div>
-					`
-					querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
-				}
+			renderPageListLoop();
 			}
 			addLastPageDisplay();
 
