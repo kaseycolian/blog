@@ -9,6 +9,6 @@ public interface BlogPostRepository extends CrudRepository<BlogPost, Long> {
 
 	ArrayList<BlogPost> findAllByAuthorId(long authorId);
 	
-//	Collection<BlogPost> findByAuthor(Author authorFirstName);
+	ArrayList<BlogPost> findByAuthor(Author author);
 
 }

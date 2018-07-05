@@ -31,6 +31,7 @@ public class BlogPostJsonTest {
 		JsonContent<BlogPost> content = blogPostJson.write(blogPost);
 
 		assertThat(content).extractingJsonPathValue("@.title").isEqualTo(TITLE);
+		assertThat(content).extractingJsonPathValue("@.author").as("Joe", "Blob");
 	}
 
 	@Test

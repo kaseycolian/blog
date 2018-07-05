@@ -27,6 +27,8 @@ function getBlogs() {
 			renderBlogPagination(blogPosts);
 		}		
 		postBlogs();	
+		console.log(currentBlogs);
+		return currentBlogs;
 	})
 	.catch(function(error) {					
 			console.log(error);
@@ -34,6 +36,7 @@ function getBlogs() {
 };
 
 const renderDateAndTime = (stringToSplit, separator) => {
+
 		 const arrayOfStrings = stringToSplit.split(separator);
 
 		 //this.date & this.time defines each markup when called in renderBlogPosts as this specific instance of date & time - removed const & added to edited date & time
@@ -53,6 +56,35 @@ const renderBlogPosts = blogPost => {
 	const T = 'T';
 	//only need to reference edidedDate & editedTime in markup from its variable in splitString();
 	const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
+	// const authorName = (blogPost._links.author.href).toString(authorFirstName);
+	// console.log(authorName);
+
+
+	const getAuthor = () =>{
+		fetch(blogPost._links.author.href)
+		.then(authorResult => {
+			// console.log(authorResult.json());
+			return authorResult.json();
+		})
+		.then(authorLinkJson => {
+			// console.log(authorLinkJson);
+			const authorFirstNameEmbed = authorLinkJson.authorFirstName;
+			this.authorFirstName = authorFirstNameEmbed;
+
+			const authorLastNameEmbed = authorLinkJson.authorLastName;
+			this.authorLastName = authorLastNameEmbed;
+			console.log(authorFirstName);
+			console.log(authorLastName);
+			return authorLinkJson;
+		})
+		.catch(function(error) {					
+			console.log(error);
+		})
+	};
+
+	getAuthor();
+
+
 
 	const markup =  `
 		<article class = "blog__entry" id = "entry__one" dataset = "post_1">
