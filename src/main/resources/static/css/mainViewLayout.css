@@ -17,14 +17,16 @@ header h3{
 	padding-top: .5rem;
 }
 nav{
-	display: inline-flex;
+	display: flex;
 	margin-left: 6rem;
 	margin-right: 6rem;
+	height: 3rem;
+	align-items: flex-end;
+	justify-content: flex-end;
 }
 section{
     display: grid;
     grid-template-rows: repeat(3, auto);
-    margin-top: 3rem;
     padding-left: 8rem;
     padding-right: 8rem;
 }
@@ -32,8 +34,8 @@ section{
 	display: inline-flex;
 }
 .page__numbers{
-	padding-left: .5rem;
-	padding-right: .5rem;
+	padding-left: .25rem;
+	padding-right: .25rem;
 }
 .blog__entry{
 	margin-bottom: 3rem;
@@ -81,6 +83,10 @@ footer{
 		margin-left: 1.5rem;
 		margin-right: 1.5rem;
 	}
+	nav {
+		margin-left: 1.5rem;
+		margin-right: 1.5rem;
+	}
 	section{
 		padding-left: 2rem;
     	padding-right: 2rem;
@@ -106,15 +112,22 @@ footer{
 }
 
 @media only screen and (max-width: 425px){
-	header{
+	header, section, footer{
 		margin-left: 0rem;
     	margin-right: 0rem;
 	}
-	section{
+	section, nav{
 		padding-left: 1rem;
     	padding-right: 1rem;
-    	margin-left: 0rem;
-    	margin-right: 0rem;
+	}
+	nav{
+		font-size: .85rem;
+		padding: .5rem;
+		margin-left: 0rem;
+		margin-right: 0rem;
+	}
+	.page__numbers{
+		padding: .25rem;
 	}
 	.entry__info{
 		display: none;
@@ -125,9 +138,5 @@ footer{
 	}
 	.entry__info__mobile h4{
 		padding-top: .25rem;
-	}
-	footer{
-		margin-left: 0rem;
-    	margin-right: 0rem;
 	}
 } 
