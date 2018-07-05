@@ -28,6 +28,9 @@ section{
     padding-left: 8rem;
     padding-right: 8rem;
 }
+.inline-pageNumbers{
+	display: inline-flex;
+}
 .page__numbers{
 	padding-left: .5rem;
 	padding-right: .5rem;
