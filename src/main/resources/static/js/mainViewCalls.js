@@ -23,6 +23,7 @@ function getBlogs() {
 			const blogPosts = currentBlogs._embedded.blogPosts.reverse();
 			this.blogResult = blogPosts;
 			renderBlogPagination(blogPosts);
+			// return blogPosts;
 		}		
 		postBlogs();	
 	})
@@ -53,7 +54,7 @@ const renderBlogPosts = blogPost => {
 			<div class = article__separator>
 			</div>
 		</article>
-		`;				
+	`;				
 	querySelected.blogSection.insertAdjacentHTML('beforeend', markup);
 };
 
@@ -88,19 +89,27 @@ const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 2) => {
 	const start = (page-1) * postsPerPage;
 	const end = page * postsPerPage;
 
+	//each blogPost gets passed in as argument to renderBlogPosts()
 	blogPosts.slice(start, end).forEach(renderBlogPosts);
 
 	renderPageButtons(page, blogPosts.length, postsPerPage);
 	renderPageList(page, blogPosts.length, postsPerPage);
+	// renderLimitedPageNumbers(blogPosts.length, postsPerPage);
 };
 
 const renderPageList = (page, numPosts, postsPerPage) => {
 	let pageCount = 1;
 	const pages = calculatePages(numPosts, postsPerPage);
 	const allPages = [];
-	const lastPage = allPages.length; 
-	const penultimatePage = allPages[allPages.length-2]; 
-	const thirdFromLastPage = allPages[allPages.length-3]; 
+
+	for (let i = 0; i < pages; i++) {
+			allPages[i] = pageCount;
+			pageCount++;
+	}
+
+	const lastPage = allPages.length; //returns 7
+	const penultimatePage = allPages[allPages.length-2]; //returns 6
+	const thirdFromLastPage = allPages[allPages.length-3]; //returns 5
 	const firstPage = allPages.slice(0,1); //returns 1
 	const first4Pages = allPages.slice(0, 6); //returns 1, 2, 3, 4, 5
 	const lastPageDisplay = `
@@ -109,12 +118,14 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 	const firstPageToDisplay = 	 `
 					<div class = "page__numbers" class = "inactive" data-goto=${firstPage}>[${firstPage}...]</div>
 				`;		
-
-	for (let i = 0; i < pages; i++) {
-			allPages[i] = pageCount;
-			pageCount++;
+	const addFirstPageDisplay = () => {
+		querySelected.navBar.insertAdjacentHTML('beforeend', firstPageToDisplay);
 	};
+	const addLastPageDisplay = () => {
+		querySelected.navBar.insertAdjacentHTML('beforeend', lastPageDisplay);
+	}
 
+	//displays all pages if less than 5 total pages
 	if (allPages.length <= 5) { 
 		for (cur of allPages.reverse()){
 			if (cur === page ) {
@@ -130,7 +141,6 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 			}
 		}
 	} else if (allPages.length > 4 ) {
-		console.log(`2nd`)
 		if (page < 4 && page != penultimatePage && page != lastPage) {
 			for (cur of first4Pages.reverse()) {
 				if (cur === page ) {
@@ -145,9 +155,9 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 					querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 				}
 			}
-			querySelected.navBar.insertAdjacentHTML('beforeend', lastPageDisplay);
+			addLastPageDisplay();
+
 		} else if (page >= 4 && page<allPages[allPages.length-4]){
-			console.log(`3rd`)
 			const pageNumberDisplay = `
 				<div class = "page__numbers" class = "inactive" data-goto=${page-3}>${page-3}</div>
 				<div class = "page__numbers" class = "inactive" data-goto=${page-2}>${page-2}</div>
@@ -159,12 +169,12 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 				<div class = "page__numbers" class = "inactive" data-goto=${page+4}>${page+4}</div>
 				`
 			if (page != 4) {
-				querySelected.navBar.insertAdjacentHTML('beforeend', firstPageToDisplay);
+				addFirstPageDisplay();
 			}
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
-			querySelected.navBar.insertAdjacentHTML('beforeend', lastPageDisplay);
-		}
-		else if (page === allPages[allPages.length-4]){
+			addLastPageDisplay();
+		} else if (page === allPages[allPages.length-4]){
+			//when pages is 4th to last
 			const pageNumberDisplay = `
 				<div class = "page__numbers" class = "inactive" data-goto=${page-3}>${page-3}</div>
 				<div class = "page__numbers" class = "inactive" data-goto=${page-2}>${page-2}</div>
@@ -174,10 +184,11 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 				<div class = "page__numbers" class = "inactive" data-goto=${page+2}>${page+2}</div>
 				<div class = "page__numbers" class = "inactive" data-goto=${page+3}>${page+3}</div>
 				`
-			querySelected.navBar.insertAdjacentHTML('beforeend', firstPageToDisplay);
+			addFirstPageDisplay();
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
-			querySelected.navBar.insertAdjacentHTML('beforeend', lastPageDisplay);
+			addLastPageDisplay();
 		} else if (page === allPages[allPages.length-3]) {
+			//when page is 3rd to last page
 			const pageNumberDisplay = `
 				<div class = "page__numbers" class = "inactive" data-goto=${page-3}>${page-3}</div>
 				<div class = "page__numbers" class = "inactive" data-goto=${page-2}>${page-2}</div>
@@ -185,13 +196,12 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 				<div class = "page__numbers" id="active__page" data-goto=${page}>${page}</div>
 				<div class = "page__numbers" class = "inactive" data-goto=${page+1}>${page+1}</div>
 				<div class = "page__numbers" class = "inactive" data-goto=${page+2}>${page+2}</div>
-
 				`
-			querySelected.navBar.insertAdjacentHTML('beforeend', firstPageToDisplay);
+			addFirstPageDisplay();
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
-			querySelected.navBar.insertAdjacentHTML('beforeend', lastPageDisplay);
-		}
-		else if ( page === penultimatePage) {
+			addLastPageDisplay();
+		} else if ( page === penultimatePage) {
+			//when page is next to last page
 			const pageNumberDisplay = `
 				<div class = "page__numbers" class = "inactive" data-goto=${page-3}>${page-3}</div>
 				<div class = "page__numbers" class = "inactive" data-goto=${page-2}>${page-2}</div>
@@ -199,9 +209,9 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 				<div class = "page__numbers" id="active__page" data-goto=${page}>${page}</div>
 				<div class = "page__numbers" class = "inactive" data-goto=${page+1}>${page+1}</div>
 				`
-			querySelected.navBar.insertAdjacentHTML('beforeend', firstPageToDisplay);
+			addFirstPageDisplay();
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
-			querySelected.navBar.insertAdjacentHTML('beforeend', lastPageDisplay);
+			addLastPageDisplay();
 		} else if ( page === lastPage) {
 			const pageNumberDisplay = `		
 				<div class = "page__numbers" class = "inactive" data-goto=${page-4}>${page-4}</div>
@@ -210,9 +220,9 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 				<div class = "page__numbers" class = "inactive" data-goto=${page-1}>${page-1}</div>
 				<div class = "page__numbers" id="active__page" data-goto=${page}>${page}</div>
 				`
-			querySelected.navBar.insertAdjacentHTML('beforeend', firstPageToDisplay);
+			addFirstPageDisplay();
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
-			querySelected.navBar.insertAdjacentHTML('beforeend', lastPageDisplay);
+			addLastPageDisplay();
 		}
 	}
 }
