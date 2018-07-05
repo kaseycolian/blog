@@ -23,7 +23,6 @@ function getBlogs() {
 			const blogPosts = currentBlogs._embedded.blogPosts.reverse();
 			this.blogResult = blogPosts;
 			renderBlogPagination(blogPosts);
-			// return blogPosts;
 		}		
 		postBlogs();	
 	})
@@ -32,8 +31,20 @@ function getBlogs() {
 	})
 };
 
+const splitString = (stringToSplit, separator) => {
+		 const arrayOfStrings = stringToSplit.split(separator);
+		 console.log(arrayOfStrings);
+		 //this.date & this.time defines each markup when called in renderBlogPosts as this specific instance of date & time
+		 this.date = arrayOfStrings[0];
+		 this.editedTime = timeUnedited.substring(0, timeUnedited.length-3);
+}
+
 const renderBlogPosts = blogPost => {
 	console.log(blogPost);
+	const T = 'T';
+	//only need to reference date & editedTime in markup from its variable in splitString();
+	const dateAndTime = splitString(blogPost.creationDate, T);
+
 	const markup =  `
 		<article class = "blog__entry" id = "entry__one" dataset = "post_1">
 			<div class = "entry__title">
@@ -42,7 +53,7 @@ const renderBlogPosts = blogPost => {
 				</div>
 			</div>
 			<div class = "entry__info">
-				<h4>${blogPost.creationDate} ~ ${blogPost._links.author.href} ~&nbsp</h4>
+				<h4>${date} ~ ${editedTime} ~ ${blogPost._links.author.href} ~&nbsp</h4>
 				<h4 class = "entry__topic">${blogPost.topic}</h4>
 			</div>
 			<div class = "entry__info__mobile">
