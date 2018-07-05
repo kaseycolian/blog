@@ -34,9 +34,18 @@ function getBlogs() {
 const splitString = (stringToSplit, separator) => {
 		 const arrayOfStrings = stringToSplit.split(separator);
 		 console.log(arrayOfStrings);
-		 //this.date & this.time defines each markup when called in renderBlogPosts as this specific instance of date & time
-		 this.date = arrayOfStrings[0];
-		 this.editedTime = timeUnedited.substring(0, timeUnedited.length-3);
+		 //this.date & this.time defines each markup when called in renderBlogPosts as this specific instance of date & time - removed const & added to edited date & time
+		 const date = arrayOfStrings[0];
+		 const timeUnedited = arrayOfStrings[1];
+
+		 //removes the milliseconds
+		 this.editedTime = timeUnedited.substring(0, timeUnedited.length-4);
+
+		 //moves year to end of date
+		 const monthAndDay = date.substring(5, date.length);
+		 const year = date.substring(0, 4);
+		 this.editedDate = `${monthAndDay}-${year}`;
+		 console.log(editedTime);
 }
 
 const renderBlogPosts = blogPost => {
@@ -53,7 +62,7 @@ const renderBlogPosts = blogPost => {
 				</div>
 			</div>
 			<div class = "entry__info">
-				<h4>${date} ~ ${editedTime} ~ ${blogPost._links.author.href} ~&nbsp</h4>
+				<h4>${editedDate} ~ ${editedTime} ~ ${blogPost._links.author.href} ~&nbsp</h4>
 				<h4 class = "entry__topic">${blogPost.topic}</h4>
 			</div>
 			<div class = "entry__info__mobile">

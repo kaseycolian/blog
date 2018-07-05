@@ -254,5 +254,11 @@ public class ResourcePopulator implements CommandLineRunner {
 						 + "the fabric before taking a catnap for put butt in owner's face and refuse to drink water except out of someone's glass allways wanting food scratch. ",
 						 johnnyTables, "Not Kitten Around", "Furballs"
 						));
+				blogPostRepo.save(new BlogPost(
+						"testing for time", johnnyTables, "Time Check", "Code Check"));
+				blogPostRepo.save(new BlogPost(
+						"another test for time", janeSmith, "Timeeee", "Code Check"));
+				blogPostRepo.save(new BlogPost(
+						"another test for timeeeeee", janeSmith, "Timeeee", "Code Check"));
 	}
 }
