@@ -27,7 +27,6 @@ function getBlogs() {
 			renderBlogPagination(blogPosts);
 		}		
 		postBlogs();	
-		console.log(currentBlogs);
 		return currentBlogs;
 	})
 	.catch(function(error) {					
@@ -35,56 +34,52 @@ function getBlogs() {
 	})
 };
 
-const renderDateAndTime = (stringToSplit, separator) => {
+const renderAuthor = blogPost => {
+	fetch(blogPost._links.author.href)
+		.then(authorResult => {
+			if (!(authorResult.ok)){
+			window.location ="http://localhost:8080/notfound";
+			console.log('could not connect');
+			}
+			return authorResult.json();
+		})
+		.then(authorLinkJson => { 			
+			console.log(authorLinkJson)
+			this.authorFirstName = authorLinkJson.authorFirstName;
+			console.log(authorFirstName);
+			this.authorLastName = authorLinkJson.authorLastName;
+			console.log(authorLastName)
+		})
+		.catch(function(error) {					
+			console.log(error);
+		})
+};
 
-		 const arrayOfStrings = stringToSplit.split(separator);
+//takes in this.blogResult from fetch for all blogPosts returned from fetch
+//has variables to calculate pages, number of blogs per page and total posts
+//calculates posts per page
+//calculates current Page
+const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 3) => {
+	// console.log(blogPosts);
+	const start = (page-1) * postsPerPage;
+	const end = page * postsPerPage;
 
-		 //this.date & this.time defines each markup when called in renderBlogPosts as this specific instance of date & time - removed const & added to edited date & time
-		 const date = arrayOfStrings[0];
-		 const timeUnedited = arrayOfStrings[1];
-		 //removes the milliseconds
-		 this.editedTime = timeUnedited.substring(0, timeUnedited.length-4);
+	//each blogPost gets passed in as argument to renderBlogPosts()
+	blogPosts.slice(start, end).forEach(renderBlogPosts);
+	// blogPosts.slice(start, end).forEach(renderAuthor);
 
-		 //moves year to end of date
-		 const monthAndDay = date.substring(5, date.length);
-		 const year = date.substring(0, 4);
-		 this.editedDate = `${monthAndDay}-${year}`;
-}
+	renderPageButtons(page, blogPosts.length, postsPerPage);
+	renderPageList(page, blogPosts.length, postsPerPage);
+	// renderLimitedPageNumbers(blogPosts.length, postsPerPage);
+};
 
 const renderBlogPosts = blogPost => {
 	console.log(blogPost);
 	const T = 'T';
 	//only need to reference edidedDate & editedTime in markup from its variable in splitString();
 	const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
-	// const authorName = (blogPost._links.author.href).toString(authorFirstName);
-	// console.log(authorName);
-
-
-	const getAuthor = () =>{
-		fetch(blogPost._links.author.href)
-		.then(authorResult => {
-			// console.log(authorResult.json());
-			return authorResult.json();
-		})
-		.then(authorLinkJson => {
-			// console.log(authorLinkJson);
-			const authorFirstNameEmbed = authorLinkJson.authorFirstName;
-			this.authorFirstName = authorFirstNameEmbed;
-
-			const authorLastNameEmbed = authorLinkJson.authorLastName;
-			this.authorLastName = authorLastNameEmbed;
-			console.log(authorFirstName);
-			console.log(authorLastName);
-			return authorLinkJson;
-		})
-		.catch(function(error) {					
-			console.log(error);
-		})
-	};
-
-	getAuthor();
-
-
+	const author = renderAuthor(blogPost);
+	// console.log(authorFirstName)
 
 	const markup =  `
 		<article class = "blog__entry" id = "entry__one" dataset = "post_1">
@@ -94,7 +89,7 @@ const renderBlogPosts = blogPost => {
 				</div>
 			</div>
 			<div class = "entry__info">
-				<h4>${editedDate} ~ ${editedTime} ~ ${blogPost._links.author.href} ~&nbsp</h4>
+				<h4>${editedDate} ~ ${editedTime} ~ ${blogPost._links.author.href.authorFirstName} ~&nbsp</h4>
 				<h4 class = "entry__topic">${blogPost.topic}</h4>
 			</div>
 			<div class = "entry__info__mobile">
@@ -108,45 +103,6 @@ const renderBlogPosts = blogPost => {
 		</article>
 	`;				
 	querySelected.blogSection.insertAdjacentHTML('beforeend', markup);
-};
-
-//displays type of button that is passed through and displays page number for next && || previous page
-const createPageButton = (page, type) => `
-	<button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
-        <span>Go To Page ${type === 'prev' ? page - 1 : page + 1}</span>
-        <img class="search__icon"
-            src="./images/${type === 'prev' ? 'left-' : 'right-'}arrows.svg">
-        </img>   
-    </button>
-`;
-
-const clearPageResultsBeforeLoadingNewPage = () => {
-	//clears out the buttons & posts on current page when going to next page
-	querySelected.blogSection.innerHTML = '';
-	//clears out nav pageList for next page's nav pageList
-	querySelected.navBar.innerHTML = '';
-}
-
-const calculatePages = (numPosts, postsPerPage) => {
-	const pages = Math.ceil(numPosts/postsPerPage);
-	return pages;
-};
-
-//takes in this.blogResult from fetch for all blogPosts returned from fetch
-//has variables to calculate pages, number of blogs per page and total posts
-//calculates posts per page
-//calculates current Page
-const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 3) => {
-	console.log(blogPosts);
-	const start = (page-1) * postsPerPage;
-	const end = page * postsPerPage;
-
-	//each blogPost gets passed in as argument to renderBlogPosts()
-	blogPosts.slice(start, end).forEach(renderBlogPosts);
-
-	renderPageButtons(page, blogPosts.length, postsPerPage);
-	renderPageList(page, blogPosts.length, postsPerPage);
-	// renderLimitedPageNumbers(blogPosts.length, postsPerPage);
 };
 
 const renderPageList = (page, numPosts, postsPerPage) => {
@@ -300,7 +256,20 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 		}
 	}
 }
+const renderDateAndTime = (stringToSplit, separator) => {
+		 const arrayOfStrings = stringToSplit.split(separator);
 
+		 //this.date & this.time defines each markup when called in renderBlogPosts as this specific instance of date & time - removed const & added to edited date & time
+		 const date = arrayOfStrings[0];
+		 const timeUnedited = arrayOfStrings[1];
+		 //removes the milliseconds
+		 this.editedTime = timeUnedited.substring(0, timeUnedited.length-4);
+
+		 //moves year to end of date
+		 const monthAndDay = date.substring(5, date.length);
+		 const year = date.substring(0, 4);
+		 this.editedDate = `${monthAndDay}-${year}`;
+}
 //calculates pages with passed in arguments
 const renderPageButtons = (page, numPosts, postsPerPage) => {
 	const pages = calculatePages(numPosts, postsPerPage);
@@ -323,6 +292,28 @@ const renderPageButtons = (page, numPosts, postsPerPage) => {
 	}
 	
 };
+//displays type of button that is passed through and displays page number for next && || previous page
+const createPageButton = (page, type) => `
+	<button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
+        <span>Go To Page ${type === 'prev' ? page - 1 : page + 1}</span>
+        <img class="search__icon"
+            src="./images/${type === 'prev' ? 'left-' : 'right-'}arrows.svg">
+        </img>   
+    </button>
+`;
+
+const clearPageResultsBeforeLoadingNewPage = () => {
+	//clears out the buttons & posts on current page when going to next page
+	querySelected.blogSection.innerHTML = '';
+	//clears out nav pageList for next page's nav pageList
+	querySelected.navBar.innerHTML = '';
+}
+
+const calculatePages = (numPosts, postsPerPage) => {
+	const pages = Math.ceil(numPosts/postsPerPage);
+	return pages;
+};
+
 
 querySelected.blogSection.addEventListener('click', e => {
 	const pageButton = e.target.closest('.btn-inline');
