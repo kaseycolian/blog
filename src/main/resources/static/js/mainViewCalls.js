@@ -3,12 +3,11 @@
 const querySelected = {
 	title: document.querySelector('.entry__title'),
 	allTitles: document.querySelectorAll('.title'),
-	blogSection: document.querySelector('section'),
-	header: document.querySelector('.headerH1'),
+	blogSection: document.querySelector('.blog-posts'),
 	pageNumberNavigation: document.querySelector('.inline-pageNumbers'),
 	navBar: document.querySelector('nav'),
-	pageList: document.querySelector('.pageList')
-
+	pageList: document.querySelector('.pageList'),
+	pageButtonSection: document.querySelector('.page-buttons')
 } 
 
 function getBlogs() {
@@ -21,6 +20,7 @@ function getBlogs() {
 		return result.json();
 	})
 	.then(currentBlogs => {		
+		console.log(currentBlogs)
 		function postBlogs() {		
 			const blogPosts = currentBlogs._embedded.blogPosts.reverse();
 			this.blogResult = blogPosts;
@@ -79,21 +79,24 @@ const renderBlogPosts = blogPost => {
 	//only need to reference edidedDate & editedTime in markup from its variable in splitString();
 	const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
 	const author = renderAuthor(blogPost);
+	const linkSeparator = '/'
+	getIndividualBlogId(blogPost._links.blogPost.href, linkSeparator);
+
 	// console.log(authorFirstName)
 
 	const markup =  `
 		<article class = "blog__entry" id = "entry__one" dataset = "post_1">
 			<div class = "entry__title">
 				<div class = "entry__link">
-					<a href = ${blogPost._links.blogPost.href} ><h2>${blogPost.title}</h2></a>
+					<a href = blogPost.html/${blogId} ><h2>${blogPost.title}</h2></a>
 				</div>
 			</div>
 			<div class = "entry__info">
-				<h4>${editedDate} ~ ${editedTime} ~ ${blogPost._links.author.href.authorFirstName} ~&nbsp</h4>
+				<h4>${editedDate} ~ ${editedTime} ~ ${blogPost._links.author.href} ~&nbsp</h4>
 				<h4 class = "entry__topic">${blogPost.topic}</h4>
 			</div>
 			<div class = "entry__info__mobile">
-				<h4>${blogPost.creationDate}</h4>
+				<h4>${editedDate} ~ ${editedTime}</h4>
 				<h4>${blogPost._links.author.href}</h4>
 				<h4 class = "entry__topic">${blogPost.topic}</h4>
 			</div>
@@ -256,6 +259,18 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 		}
 	}
 }
+
+//click on title to go to individual blog
+//add event delegation if e = entry__link
+//const blogId = zipCodeSubmitButton.parentElement.parentElement.querySelector('input').value;
+// window.open("http://localhost:8080/blogPost/" + blogId, '_blank');
+
+const getIndividualBlogId = (stringToSplit, separator) => {
+	const arrayOfLinkStrings = stringToSplit.split(separator);
+	this.blogId = arrayOfLinkStrings[arrayOfLinkStrings.length - 1];
+	console.log(blogId);
+}
+
 const renderDateAndTime = (stringToSplit, separator) => {
 		 const arrayOfStrings = stringToSplit.split(separator);
 
@@ -278,24 +293,23 @@ const renderPageButtons = (page, numPosts, postsPerPage) => {
 	if (page === 1 && pages > 1) {
 		pageButton = 			
 			createPageButton(page, 'next');
-			querySelected.blogSection.insertAdjacentHTML('afterbegin', pageButton);
+			querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
 	} else if (page < pages) {
 		pageButton = `
 			${createPageButton(page, 'next')}
 			${createPageButton(page, 'prev')}
 		`
-		querySelected.blogSection.insertAdjacentHTML('afterbegin', pageButton);
+		querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
 	} else if (page === pages && page > 1) {
 		pageButton = 
 			createPageButton(page, 'prev');
-			querySelected.blogSection.insertAdjacentHTML('afterbegin', pageButton);
+			querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
 	}
 	
 };
 //displays type of button that is passed through and displays page number for next && || previous page
 const createPageButton = (page, type) => `
 	<button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
-        <span>Go To Page ${type === 'prev' ? page - 1 : page + 1}</span>
         <img class="search__icon"
             src="./images/${type === 'prev' ? 'left-' : 'right-'}arrows.svg">
         </img>   
@@ -307,6 +321,7 @@ const clearPageResultsBeforeLoadingNewPage = () => {
 	querySelected.blogSection.innerHTML = '';
 	//clears out nav pageList for next page's nav pageList
 	querySelected.navBar.innerHTML = '';
+	querySelected.pageButtonSection.innerHTML = '';
 }
 
 const calculatePages = (numPosts, postsPerPage) => {
@@ -315,7 +330,7 @@ const calculatePages = (numPosts, postsPerPage) => {
 };
 
 
-querySelected.blogSection.addEventListener('click', e => {
+querySelected.pageButtonSection.addEventListener('click', e => {
 	const pageButton = e.target.closest('.btn-inline');
 	if (pageButton) {
 		const goToPage = parseInt(pageButton.dataset.goto, 10);

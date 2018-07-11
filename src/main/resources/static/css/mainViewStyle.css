@@ -30,8 +30,17 @@ section{
 	color: magenta;
 }
 .btn-inline > img{
-	height: 5rem;
-	width: 5rem;
+	height: 1rem;
+	width: 2rem;
+	padding: .2rem;
+}
+.btn-inline{
+	height: 3rem;
+	width: 4rem;
+	border-radius: 1.25rem;
+	font-size: .75rem;
+	border: .15rem solid darkblue;
+    background-color: aliceblue;
 }
 .blog__entry{
 	background-color: lightblue;
