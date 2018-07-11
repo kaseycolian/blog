@@ -43,12 +43,16 @@ const renderAuthor = blogPost => {
 			}
 			return authorResult.json();
 		})
-		.then(authorLinkJson => { 			
-			console.log(authorLinkJson)
-			this.authorFirstName = authorLinkJson.authorFirstName;
-			console.log(authorFirstName);
-			this.authorLastName = authorLinkJson.authorLastName;
-			console.log(authorLastName)
+		.then(authorLinkJson => { 		
+			function postAuthors() {	
+				const authorNames = authorLinkJson.authorFirstName;
+				this.authorFirstName = authorNames;
+				console.log(authorFirstName);
+				this.authorLastName = authorLinkJson.authorLastName;
+				console.log(authorLastName)
+			}
+			postAuthors();
+			return authorLinkJson;
 		})
 		.catch(function(error) {					
 			console.log(error);
@@ -66,7 +70,6 @@ const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 3) => {
 
 	//each blogPost gets passed in as argument to renderBlogPosts()
 	blogPosts.slice(start, end).forEach(renderBlogPosts);
-	// blogPosts.slice(start, end).forEach(renderAuthor);
 
 	renderPageButtons(page, blogPosts.length, postsPerPage);
 	renderPageList(page, blogPosts.length, postsPerPage);
@@ -78,24 +81,24 @@ const renderBlogPosts = blogPost => {
 	const T = 'T';
 	//only need to reference edidedDate & editedTime in markup from its variable in splitString();
 	const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
-	const author = renderAuthor(blogPost);
 	const linkSeparator = '/'
 	getIndividualBlogId(blogPost._links.blogPost.href, linkSeparator);
 
 	const spaceSeparator = ' ';
 	renderBlogContentDisplay(blogPost.content, spaceSeparator);
 
-	// console.log(authorFirstName)
+	// renderAuthor(blogPost);
+	// console.log(renderAuthor(authorFirstName))
 
 	const markup =  `
 		<article class = "blog__entry" id = "entry__one" dataset = "post_1">
 			<div class = "entry__title">
 				<div class = "entry__link">
-					<a href = blogPost.html/${blogId} ><h2>${blogPost.title}</h2></a>
+					<a href = blogPost.html/${blogId} target='_blank' ><h2>${blogPost.title}</h2></a>
 				</div>
 			</div>
 			<div class = "entry__info">
-				<h4>${editedDate} ~ ${editedTime} ~ ${blogPost._links.author.href} ~&nbsp</h4>
+				<h4>${editedDate} ~ ${editedTime} ~ ${blogId} ~&nbsp</h4>
 				<h4 class = "entry__topic">${blogPost.topic}</h4>
 			</div>
 			<div class = "entry__info__mobile">
@@ -263,10 +266,7 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 	}
 }
 
-//click on title to go to individual blog
-//add event delegation if e = entry__link
-//const blogId = zipCodeSubmitButton.parentElement.parentElement.querySelector('input').value;
-// window.open("http://localhost:8080/blogPost/" + blogId, '_blank');
+
 
 const getIndividualBlogId = (stringToSplit, separator) => {
 	const arrayOfLinkStrings = stringToSplit.split(separator);
@@ -305,7 +305,7 @@ const renderDateAndTime = (stringToSplit, separator) => {
 const renderPageButtons = (page, numPosts, postsPerPage) => {
 	const pages = calculatePages(numPosts, postsPerPage);
 	let pageButton;
-		
+
 	if (page === 1 && pages > 1) {
 		pageButton = `
 			${createPageButton(page, 'prev', 'hidden')}		
@@ -370,5 +370,9 @@ querySelected.navBar.addEventListener('click', e => {
 		renderBlogPagination(blogResult, goToPage);
 	}
 });
+
+
+
+
 
 getBlogs();
