@@ -82,6 +82,9 @@ const renderBlogPosts = blogPost => {
 	const linkSeparator = '/'
 	getIndividualBlogId(blogPost._links.blogPost.href, linkSeparator);
 
+	const spaceSeparator = ' ';
+	renderBlogContentDisplay(blogPost.content, spaceSeparator);
+
 	// console.log(authorFirstName)
 
 	const markup =  `
@@ -100,7 +103,7 @@ const renderBlogPosts = blogPost => {
 				<h4>${blogPost._links.author.href}</h4>
 				<h4 class = "entry__topic">${blogPost.topic}</h4>
 			</div>
-			<p class = "entry__content">${blogPost.content}</p>
+			<p class = "entry__content">${blogContent}</p>
 			<div class = article__separator>
 			</div>
 		</article>
@@ -271,6 +274,17 @@ const getIndividualBlogId = (stringToSplit, separator) => {
 	console.log(blogId);
 }
 
+const renderBlogContentDisplay = (stringToSplit, separator) => {
+	const arrayOfBlogContentWords = stringToSplit.split(separator);
+	if (arrayOfBlogContentWords.length > 200) {		
+		contentArray = arrayOfBlogContentWords.slice(0, 200);
+		contentArray.push('...');
+		this.blogContent = contentArray.join(" ");
+	} else {
+		this.blogContent = stringToSplit;
+	}
+}
+
 const renderDateAndTime = (stringToSplit, separator) => {
 		 const arrayOfStrings = stringToSplit.split(separator);
 
@@ -296,8 +310,8 @@ const renderPageButtons = (page, numPosts, postsPerPage) => {
 			querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
 	} else if (page < pages) {
 		pageButton = `
-			${createPageButton(page, 'next')}
 			${createPageButton(page, 'prev')}
+			${createPageButton(page, 'next')}			
 		`
 		querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
 	} else if (page === pages && page > 1) {
@@ -311,6 +325,7 @@ const renderPageButtons = (page, numPosts, postsPerPage) => {
 const createPageButton = (page, type) => `
 	<button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
         <img class="search__icon"
+
             src="./images/${type === 'prev' ? 'left-' : 'right-'}arrows.svg">
         </img>   
     </button>
