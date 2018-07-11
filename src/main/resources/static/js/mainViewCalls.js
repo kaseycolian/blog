@@ -274,6 +274,7 @@ const getIndividualBlogId = (stringToSplit, separator) => {
 	console.log(blogId);
 }
 
+//limits amount of words displayed in blog content - called in renderBlogPost()
 const renderBlogContentDisplay = (stringToSplit, separator) => {
 	const arrayOfBlogContentWords = stringToSplit.split(separator);
 	if (arrayOfBlogContentWords.length > 200) {		
@@ -285,6 +286,7 @@ const renderBlogContentDisplay = (stringToSplit, separator) => {
 	}
 }
 
+//creates formatting for proper date & time of creation. called in renderBlogPost()
 const renderDateAndTime = (stringToSplit, separator) => {
 		 const arrayOfStrings = stringToSplit.split(separator);
 
@@ -303,27 +305,33 @@ const renderDateAndTime = (stringToSplit, separator) => {
 const renderPageButtons = (page, numPosts, postsPerPage) => {
 	const pages = calculatePages(numPosts, postsPerPage);
 	let pageButton;
-
+		
 	if (page === 1 && pages > 1) {
-		pageButton = 			
-			createPageButton(page, 'next');
+		pageButton = `
+			${createPageButton(page, 'prev', 'hidden')}		
+			${createPageButton(page, 'next')}
+			`
+			// document.querySelector(".btn-inline.results__btn--prev").style.display = none;
 			querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
-	} else if (page < pages) {
+	} 
+	else if (page < pages) {
 		pageButton = `
 			${createPageButton(page, 'prev')}
 			${createPageButton(page, 'next')}			
 		`
 		querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
 	} else if (page === pages && page > 1) {
-		pageButton = 
-			createPageButton(page, 'prev');
+		pageButton = `
+			${createPageButton(page, 'prev')}
+			${createPageButton(page, 'next', 'hidden')}	
+			`
 			querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
 	}
 	
 };
 //displays type of button that is passed through and displays page number for next && || previous page
-const createPageButton = (page, type) => `
-	<button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
+const createPageButton = (page, type, display) => `
+	<button class="btn-inline results__btn--${type}" style = "visibility:${display}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
         <img class="search__icon"
 
             src="./images/${type === 'prev' ? 'left-' : 'right-'}arrows.svg">
