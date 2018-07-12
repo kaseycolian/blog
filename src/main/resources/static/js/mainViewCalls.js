@@ -278,7 +278,7 @@ const renderBlogContentDisplay = (stringToSplit, separator, allowedWordCount = 2
 	if (arrayOfBlogContentWords.length > allowedWordCount) {		
 		const contentArray = arrayOfBlogContentWords.slice(0, allowedWordCount);
 		const moreToComeMarkUp = `
-			<strong style="color: yellow; font-size: 2rem">...</strong>
+			<a href = "/blogPosts/${blogId}" target='_blank'><strong style="color: yellow; font-size: 2rem">...</strong></a>
 		`;
 		contentArray.push(moreToComeMarkUp);
 		contentArray[contentArray.length-1];
