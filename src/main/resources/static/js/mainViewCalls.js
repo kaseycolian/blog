@@ -1,8 +1,6 @@
 // import axios from 'axios';
 
 const querySelected = {
-	title: document.querySelector('.entry__title'),
-	allTitles: document.querySelectorAll('.title'),
 	blogSection: document.querySelector('.blog-posts'),
 	pageNumberNavigation: document.querySelector('.inline-pageNumbers'),
 	navBar: document.querySelector('nav'),
@@ -33,6 +31,8 @@ function getBlogs() {
 			console.log(error);
 	})
 };
+
+getBlogs();
 
 const renderAuthor = blogPost => {
 	fetch(blogPost._links.author.href)
@@ -156,7 +156,6 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 			}
 	};
 
-	//displays all pages if less than 5 total pages
 	if (allPages.length <= 5) { 
 		for (cur of allPages.reverse()) {
 			renderPageListLoop();
@@ -266,20 +265,23 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 	}
 }
 
-
-
+//gets blogID from each blog's link (last index in Array made from splitting URL string) - called in renderBlogPost()
 const getIndividualBlogId = (stringToSplit, separator) => {
 	const arrayOfLinkStrings = stringToSplit.split(separator);
 	this.blogId = arrayOfLinkStrings[arrayOfLinkStrings.length - 1];
 	console.log(blogId);
 }
 
-//limits amount of words displayed in blog content - called in renderBlogPost()
-const renderBlogContentDisplay = (stringToSplit, separator) => {
+//limits amount of words displayed in blog content & adds '...' to posts that are over set limit - called in renderBlogPost()
+const renderBlogContentDisplay = (stringToSplit, separator, allowedWordCount = 200) => {
 	const arrayOfBlogContentWords = stringToSplit.split(separator);
-	if (arrayOfBlogContentWords.length > 200) {		
-		contentArray = arrayOfBlogContentWords.slice(0, 200);
-		contentArray.push('...');
+	if (arrayOfBlogContentWords.length > allowedWordCount) {		
+		const contentArray = arrayOfBlogContentWords.slice(0, allowedWordCount);
+		const moreToComeMarkUp = `
+			<strong style="color: yellow; font-size: 2rem">...</strong>
+		`;
+		contentArray.push(moreToComeMarkUp);
+		contentArray[contentArray.length-1];
 		this.blogContent = contentArray.join(" ");
 	} else {
 		this.blogContent = stringToSplit;
@@ -296,7 +298,7 @@ const renderDateAndTime = (stringToSplit, separator) => {
 		 //removes the milliseconds
 		 this.editedTime = timeUnedited.substring(0, timeUnedited.length-4);
 
-		 //moves year to end of date
+		 //moves year to end of date by selecting substring elements and declaring in template literal
 		 const monthAndDay = date.substring(5, date.length);
 		 const year = date.substring(0, 4);
 		 this.editedDate = `${monthAndDay}-${year}`;
@@ -338,20 +340,17 @@ const createPageButton = (page, type, display) => `
         </img>   
     </button>
 `;
-
+//clears out blog-post, page numbers, and prev/next buttons before adding them again on new page display
 const clearPageResultsBeforeLoadingNewPage = () => {
-	//clears out the buttons & posts on current page when going to next page
 	querySelected.blogSection.innerHTML = '';
-	//clears out nav pageList for next page's nav pageList
 	querySelected.navBar.innerHTML = '';
 	querySelected.pageButtonSection.innerHTML = '';
-}
+};
 
 const calculatePages = (numPosts, postsPerPage) => {
 	const pages = Math.ceil(numPosts/postsPerPage);
 	return pages;
 };
-
 
 querySelected.pageButtonSection.addEventListener('click', e => {
 	const pageButton = e.target.closest('.btn-inline');
@@ -370,9 +369,3 @@ querySelected.navBar.addEventListener('click', e => {
 		renderBlogPagination(blogResult, goToPage);
 	}
 });
-
-
-
-
-
-getBlogs();
