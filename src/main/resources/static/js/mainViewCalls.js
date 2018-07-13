@@ -6,16 +6,8 @@ const querySelected = {
 	pageNumberNavigation: document.querySelector('.inline-pageNumbers'),
 	navBar: document.querySelector('nav'),
 	pageList: document.querySelector('.pageList'),
-	pageButtonSection: document.querySelector('.page-buttons'),
-	inputtedPage: document.querySelector('.page__input')
+	pageButtonSection: document.querySelector('.page-buttons')
 } 
-
-
-const getInputtedPage = () => {
-	const pageToGoTo = querySelected.inputtedPage.value;
-};
-
-const clearInputtedValue = () => querySelected.inputtedPage.value = '';
 
 function getBlogs() {
 	fetch(`/blogPosts`)
@@ -420,14 +412,15 @@ querySelected.navBar.addEventListener('click', e => {
 });
 
 querySelected.navBar.addEventListener('keypress', e => {
-
 	const pageToGoToForm = e.target.closest('.page__input');
+	const pageEntered = pageToGoToForm.value;
 	const key = e.which || e.keyCode;
 	if (pageToGoToForm){
 		if (key === 13) {
+			console.log(pageEntered)
 			e.preventDefault();
-			getInputtedPage();
-			clearInputtedValue();
+			// getInputtedPage();
+			// clearInputtedValue();
 		}
 	}
 });
