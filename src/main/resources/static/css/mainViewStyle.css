@@ -30,8 +30,8 @@ section{
 	color: magenta;
 }
 .page-buttons{
-	justify-content: center;
-    display: inline-flex;
+	display: inline-flex;
+	justify-content: flex-end;
 }
 .btn-inline > img{
 	height: 1rem;

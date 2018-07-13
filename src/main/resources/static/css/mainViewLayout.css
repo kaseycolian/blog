@@ -37,9 +37,21 @@ section{
 	padding-left: .25rem;
 	padding-right: .25rem;
 }
+.page__input {
+	width: 2rem;
+}
+.page__input::placeholder {
+    text-align:  center;
+}
+.blog_entry{
+	padding-left: .5rem;
+	padding-right: .5rem;
+}
 .blog__entry{
 	margin-bottom: 3rem;
 	width: auto;
+	display: flex;
+    flex-direction: column;
 }
 .entry__info{
 	display: inline-flex;
@@ -49,8 +61,8 @@ section{
 .entry__info__mobile{
 	display: none;
 }
-#entry__one{
-	padding-top: .25rem;
+.title__section{
+	display: inline-flex;
 }
 footer{
     display: flex;

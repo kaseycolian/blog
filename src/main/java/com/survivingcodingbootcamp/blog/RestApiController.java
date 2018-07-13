@@ -33,7 +33,7 @@ public class RestApiController {
 		return retrivedAuthorQuery.get();
 	}
 
-	@RequestMapping("/blogPosts.html/{id}")
+	@RequestMapping("/blogPosts/{id}")
 	public BlogPost findBlogPostById(@PathVariable(name = "id") Long blogPostId) {
 		Optional<BlogPost> retrievedBlogPostQuery = blogPostRepo.findById(blogPostId);
 		if (!retrievedBlogPostQuery.isPresent()) {

@@ -1,12 +1,21 @@
 // import axios from 'axios';
+// import { number } from './test';
 
 const querySelected = {
 	blogSection: document.querySelector('.blog-posts'),
 	pageNumberNavigation: document.querySelector('.inline-pageNumbers'),
 	navBar: document.querySelector('nav'),
 	pageList: document.querySelector('.pageList'),
-	pageButtonSection: document.querySelector('.page-buttons')
+	pageButtonSection: document.querySelector('.page-buttons'),
+	inputtedPage: document.querySelector('.page__input')
 } 
+
+
+const getInputtedPage = () => {
+	const pageToGoTo = querySelected.inputtedPage.value;
+};
+
+const clearInputtedValue = () => querySelected.inputtedPage.value = '';
 
 function getBlogs() {
 	fetch(`/blogPosts`)
@@ -23,41 +32,59 @@ function getBlogs() {
 			const blogPosts = currentBlogs._embedded.blogPosts.reverse();
 			this.blogResult = blogPosts;
 			renderBlogPagination(blogPosts);
+
+			//**Trying to return a promise to fetch the author's link. **Having troubles getting to ._links in Array
+			// for (cur of blogPosts) {
+			// console.log(cur._links.author.href);
+			// }
+			// blogPosts.forEach()
+			// const link = blogPosts._links.author.href
 		}		
 		postBlogs();	
-		return currentBlogs;
+
+		// return fetch()
 	})
+	// .then(currentLinks => {
+	// 	console.log(currentLinks);
+	// 	for (cur of currentLinks){
+	// 		console.log(currentLinks.embedded.blogPosts._links)
+	// 	}
+	// })
 	.catch(function(error) {					
 			console.log(error);
 	})
 };
-
 getBlogs();
 
-const renderAuthor = blogPost => {
-	fetch(blogPost._links.author.href)
-		.then(authorResult => {
-			if (!(authorResult.ok)){
-			window.location ="http://localhost:8080/notfound";
-			console.log('could not connect');
-			}
-			return authorResult.json();
-		})
-		.then(authorLinkJson => { 		
-			function postAuthors() {	
-				const authorNames = authorLinkJson.authorFirstName;
-				this.authorFirstName = authorNames;
-				console.log(authorFirstName);
-				this.authorLastName = authorLinkJson.authorLastName;
-				console.log(authorLastName)
-			}
-			postAuthors();
-			return authorLinkJson;
-		})
-		.catch(function(error) {					
-			console.log(error);
-		})
+const renderAuthor = authorLink => {
+	fetch(authorLink)
+	.then(authorResult => {
+		if (!(authorResult.ok)){
+		// window.location ="http://localhost:8080/notfound";
+		console.log('could not connect');
+		}
+		return authorResult.json();
+	})
+	.then(authorLinkJson => { 		
+			const firstName = authorLinkJson.authorFirstName;
+			this.authorFirstName = firstName;
+			console.log(authorFirstName);
+			this.authorLastName = authorLinkJson.authorLastName;
+			console.log(authorLastName);
+			// getAuthorsNames();
+	})
+	.catch(function(error) {					
+		console.log(error);
+	})
 };
+
+// const getAuthorsNames = (firstName, lastName) => {
+// 	firstName = this.authorFirstName;
+// 	console.log(authorFirstName);
+// 	lastName = this.authorLastName;
+// 	console.log(authorLastName);
+// }
+
 
 //takes in this.blogResult from fetch for all blogPosts returned from fetch
 //has variables to calculate pages, number of blogs per page and total posts
@@ -69,32 +96,32 @@ const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 3) => {
 	const end = page * postsPerPage;
 
 	//each blogPost gets passed in as argument to renderBlogPosts()
-	blogPosts.slice(start, end).forEach(renderBlogPosts);
+	blogPosts.slice(start, end).forEach(renderBlogPosts)
 
 	renderPageButtons(page, blogPosts.length, postsPerPage);
 	renderPageList(page, blogPosts.length, postsPerPage);
+	// addInputtedPageToDataGoTo(page, blogPosts.length, postsPerPage);
 	// renderLimitedPageNumbers(blogPosts.length, postsPerPage);
 };
 
-const renderBlogPosts = blogPost => {
+const renderBlogPosts = (blogPost, authorNames) => {
 	console.log(blogPost);
 	const T = 'T';
 	//only need to reference edidedDate & editedTime in markup from its variable in splitString();
 	const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
 	const linkSeparator = '/'
 	getIndividualBlogId(blogPost._links.blogPost.href, linkSeparator);
-
 	const spaceSeparator = ' ';
 	renderBlogContentDisplay(blogPost.content, spaceSeparator);
 
-	// renderAuthor(blogPost);
-	// console.log(renderAuthor(authorFirstName))
+	renderAuthor(blogPost._links.author.href);
+	// console.log(this.authorFirstName)
 
 	const markup =  `
 		<article class = "blog__entry" id = "entry__one" dataset = "post_1">
 			<div class = "entry__title">
 				<div class = "entry__link">
-					<a href = blogPost.html/${blogId} target='_blank' ><h2>${blogPost.title}</h2></a>
+					<a href = /blogPost.html/${blogId} target='_blank' class = "title__section" ><h2>${blogPost.title}</h2></a>
 				</div>
 			</div>
 			<div class = "entry__info">
@@ -113,8 +140,9 @@ const renderBlogPosts = blogPost => {
 	`;				
 	querySelected.blogSection.insertAdjacentHTML('beforeend', markup);
 };
-
+//called in renderBlogPagination
 const renderPageList = (page, numPosts, postsPerPage) => {
+
 	let pageCount = 1;
 	const pages = calculatePages(numPosts, postsPerPage);
 	const allPages = [];
@@ -136,12 +164,25 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 		`;		
 		querySelected.navBar.insertAdjacentHTML('afterbegin', firstPageToDisplay);
 	};
+
 	const renderLastPageDisplay = () => {
 		const lastPageDisplay = `
 		<div class = "page__numbers" class = "inactive" data-goto=${lastPage}>[...${lastPage}]</div>
 		`;
 		querySelected.navBar.insertAdjacentHTML('beforeend', lastPageDisplay);
-	};
+	};	
+
+	const createPageInputForm = () => {		
+		// if (pageToGoTo > 0 && pageToGoTo <= pages){ 
+			const goToPageForm = `
+				<form>	
+					<input type="text" class="page__input" data-goto="" placeholder="#">
+				</form>
+				`;
+			querySelected.navBar.insertAdjacentHTML('beforeend', goToPageForm);
+		// }
+	}
+
 	const renderPageListLoop = () => {
 		if (cur === page ) {
 				const pageNumberDisplay = `
@@ -160,12 +201,14 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 		for (cur of allPages.reverse()) {
 			renderPageListLoop();
 		}
+		createPageInputForm();
 	} else if (allPages.length > 4 ) {
 		if (page < 4 && page != penultimatePage && page != lastPage) {
 			for (cur of first4Pages.reverse()) {
 			renderPageListLoop();
 			}
 			renderLastPageDisplay();
+			createPageInputForm();
 		} else if (page >= 4 && page<allPages[allPages.length-4]) {
 			const mobileView = window.matchMedia('(max-width: 320px)');
 
@@ -196,20 +239,22 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 				querySelected.navBar.insertAdjacentHTML('afterbegin', mobilePageNumberDisplay);
 				renderFirstPageDisplay();
 				renderLastPageDisplay();
-
+				createPageInputForm();
 			} else if (mobileView.matches) {
 				console.log(`2nd mobile`);
 				querySelected.navBar.insertAdjacentHTML('afterbegin', mobilePageNumberDisplay);
 				renderLastPageDisplay();
-
+				createPageInputForm();
 			} else if (page != 4) {
 				querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 				renderFirstPageDisplay();
 				renderLastPageDisplay();
+				createPageInputForm();
 			} 
 			 else  {
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 			renderLastPageDisplay();
+			createPageInputForm();
 			}
 		} else if (page === allPages[allPages.length-4]) {
 			//when pages is 4th to last
@@ -225,6 +270,7 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 			renderFirstPageDisplay();
 			renderLastPageDisplay();
+			createPageInputForm();
 		} else if (page === allPages[allPages.length-3]) {
 			//when page is 3rd to last page
 			const pageNumberDisplay = `
@@ -238,6 +284,7 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 			renderFirstPageDisplay();
 			renderLastPageDisplay();
+			createPageInputForm();
 		} else if ( page === penultimatePage) {
 			//when page is next to last page
 			const pageNumberDisplay = `
@@ -250,6 +297,7 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 			renderFirstPageDisplay();
 			renderLastPageDisplay();
+			createPageInputForm();
 		} else if ( page === lastPage) {
 			const pageNumberDisplay = `		
 				<div class = "page__numbers" class = "inactive" data-goto=${page-4}>${page-4}</div>
@@ -261,6 +309,7 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 			renderFirstPageDisplay();
 			renderLastPageDisplay();
+			createPageInputForm();
 		}
 	}
 }
@@ -269,7 +318,7 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 const getIndividualBlogId = (stringToSplit, separator) => {
 	const arrayOfLinkStrings = stringToSplit.split(separator);
 	this.blogId = arrayOfLinkStrings[arrayOfLinkStrings.length - 1];
-	console.log(blogId);
+	// console.log(blogId);
 }
 
 //limits amount of words displayed in blog content & adds '...' to posts that are over set limit - called in renderBlogPost()
@@ -278,7 +327,7 @@ const renderBlogContentDisplay = (stringToSplit, separator, allowedWordCount = 2
 	if (arrayOfBlogContentWords.length > allowedWordCount) {		
 		const contentArray = arrayOfBlogContentWords.slice(0, allowedWordCount);
 		const moreToComeMarkUp = `
-			<a href = "/blogPosts/${blogId}" target='_blank'><strong style="color: yellow; font-size: 2rem">...</strong></a>
+			<a href = "/blogPosts/${blogId}" target='_blank'><strong style="color: yellow; font-size: 2rem">...Show More</strong></a>
 		`;
 		contentArray.push(moreToComeMarkUp);
 		contentArray[contentArray.length-1];
@@ -328,9 +377,9 @@ const renderPageButtons = (page, numPosts, postsPerPage) => {
 			${createPageButton(page, 'next', 'hidden')}	
 			`
 			querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
-	}
-	
+	}	
 };
+
 //displays type of button that is passed through and displays page number for next && || previous page
 const createPageButton = (page, type, display) => `
 	<button class="btn-inline results__btn--${type}" style = "visibility:${display}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
@@ -367,5 +416,18 @@ querySelected.navBar.addEventListener('click', e => {
 		const goToPage = parseInt(pageList.dataset.goto, 10);
 		clearPageResultsBeforeLoadingNewPage();
 		renderBlogPagination(blogResult, goToPage);
+	}
+});
+
+querySelected.navBar.addEventListener('keypress', e => {
+
+	const pageToGoToForm = e.target.closest('.page__input');
+	const key = e.which || e.keyCode;
+	if (pageToGoToForm){
+		if (key === 13) {
+			e.preventDefault();
+			getInputtedPage();
+			clearInputtedValue();
+		}
 	}
 });
