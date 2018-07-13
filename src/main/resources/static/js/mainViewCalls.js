@@ -93,15 +93,22 @@ const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 3) => {
 	renderPageButtons(page, blogPosts.length, postsPerPage);
 	renderPageList(page, blogPosts.length, postsPerPage);
 	createPageInputForm(page, blogPosts.length, postsPerPage);
-	// addInputtedPageToDataGoTo(page, blogPosts.length, postsPerPage);
-	// renderLimitedPageNumbers(blogPosts.length, postsPerPage);
 };
 
 const createPageInputForm = (page, numPosts, postsPerPage) => {	
 	const pages = calculatePages(numPosts, postsPerPage);
-	console.log(pages);
-	pageBoxListener();
 	
+	pageBoxListener();
+	console.log(`coming from createInputForm(): ${this.pageEntered}`);
+
+	//returns all pages available - go to pages.length - inputted value.
+	// const allPages = [];
+	// //returns count of all pages in an Array of allPages
+	// for (let i = 0; i < pages; i++) {
+	// 		allPages[i] = pageCount;
+	// 		pageCount++;
+	// }
+
 	const goToPageForm = `
 		<form>	
 			<input type="text" class="page__input" data-goto="${page}" placeholder="#">
@@ -406,16 +413,16 @@ querySelected.navBar.addEventListener('click', e => {
 const pageBoxListener = () => {
 	querySelected.navBar.addEventListener('keypress', e => {
 		const pageToGoToForm = e.target.closest('.page__input');
-		const pageEntered = pageToGoToForm.value;
+		this.pageEntered = pageToGoToForm.value;
 		const key = e.which || e.keyCode;
 		if (pageToGoToForm){
 			if (key === 13) {
-				console.log(pageEntered)
+				// console.log(pageEntered)
 				e.preventDefault();
 				const goToPage = parseInt(pageToGoToForm.dataset.goto, 10);
 				clearPageResultsBeforeLoadingNewPage();
 				renderBlogPagination(blogResult, goToPage);
-				return 
+				// return pageEntered;
 			}
 		}
 	});			
