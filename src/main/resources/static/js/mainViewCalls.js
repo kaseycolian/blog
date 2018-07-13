@@ -92,9 +92,23 @@ const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 3) => {
 
 	renderPageButtons(page, blogPosts.length, postsPerPage);
 	renderPageList(page, blogPosts.length, postsPerPage);
+	createPageInputForm(page, blogPosts.length, postsPerPage);
 	// addInputtedPageToDataGoTo(page, blogPosts.length, postsPerPage);
 	// renderLimitedPageNumbers(blogPosts.length, postsPerPage);
 };
+
+const createPageInputForm = (page, numPosts, postsPerPage) => {	
+	const pages = calculatePages(numPosts, postsPerPage);
+	console.log(pages);
+	pageBoxListener();
+	
+	const goToPageForm = `
+		<form>	
+			<input type="text" class="page__input" data-goto="${page}" placeholder="#">
+		</form>
+		`;
+	querySelected.navBar.insertAdjacentHTML('beforeend', goToPageForm);
+}
 
 const renderBlogPosts = (blogPost, authorNames) => {
 	console.log(blogPost);
@@ -132,6 +146,7 @@ const renderBlogPosts = (blogPost, authorNames) => {
 	`;				
 	querySelected.blogSection.insertAdjacentHTML('beforeend', markup);
 };
+
 //called in renderBlogPagination
 const renderPageList = (page, numPosts, postsPerPage) => {
 
@@ -164,17 +179,6 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 		querySelected.navBar.insertAdjacentHTML('beforeend', lastPageDisplay);
 	};	
 
-	const createPageInputForm = () => {		
-		// if (pageToGoTo > 0 && pageToGoTo <= pages){ 
-			const goToPageForm = `
-				<form>	
-					<input type="text" class="page__input" data-goto="" placeholder="#">
-				</form>
-				`;
-			querySelected.navBar.insertAdjacentHTML('beforeend', goToPageForm);
-		// }
-	}
-
 	const renderPageListLoop = () => {
 		if (cur === page ) {
 				const pageNumberDisplay = `
@@ -193,14 +197,12 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 		for (cur of allPages.reverse()) {
 			renderPageListLoop();
 		}
-		createPageInputForm();
 	} else if (allPages.length > 4 ) {
 		if (page < 4 && page != penultimatePage && page != lastPage) {
 			for (cur of first4Pages.reverse()) {
 			renderPageListLoop();
 			}
 			renderLastPageDisplay();
-			createPageInputForm();
 		} else if (page >= 4 && page<allPages[allPages.length-4]) {
 			const mobileView = window.matchMedia('(max-width: 320px)');
 
@@ -231,22 +233,17 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 				querySelected.navBar.insertAdjacentHTML('afterbegin', mobilePageNumberDisplay);
 				renderFirstPageDisplay();
 				renderLastPageDisplay();
-				createPageInputForm();
 			} else if (mobileView.matches) {
 				console.log(`2nd mobile`);
 				querySelected.navBar.insertAdjacentHTML('afterbegin', mobilePageNumberDisplay);
 				renderLastPageDisplay();
-				createPageInputForm();
 			} else if (page != 4) {
 				querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 				renderFirstPageDisplay();
 				renderLastPageDisplay();
-				createPageInputForm();
-			} 
-			 else  {
-			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
-			renderLastPageDisplay();
-			createPageInputForm();
+			} else {
+				querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
+				renderLastPageDisplay();
 			}
 		} else if (page === allPages[allPages.length-4]) {
 			//when pages is 4th to last
@@ -262,7 +259,6 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 			renderFirstPageDisplay();
 			renderLastPageDisplay();
-			createPageInputForm();
 		} else if (page === allPages[allPages.length-3]) {
 			//when page is 3rd to last page
 			const pageNumberDisplay = `
@@ -276,7 +272,6 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 			renderFirstPageDisplay();
 			renderLastPageDisplay();
-			createPageInputForm();
 		} else if ( page === penultimatePage) {
 			//when page is next to last page
 			const pageNumberDisplay = `
@@ -289,7 +284,6 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 			renderFirstPageDisplay();
 			renderLastPageDisplay();
-			createPageInputForm();
 		} else if ( page === lastPage) {
 			const pageNumberDisplay = `		
 				<div class = "page__numbers" class = "inactive" data-goto=${page-4}>${page-4}</div>
@@ -301,7 +295,6 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 			renderFirstPageDisplay();
 			renderLastPageDisplay();
-			createPageInputForm();
 		}
 	}
 }
@@ -319,7 +312,7 @@ const renderBlogContentDisplay = (stringToSplit, separator, allowedWordCount = 2
 	if (arrayOfBlogContentWords.length > allowedWordCount) {		
 		const contentArray = arrayOfBlogContentWords.slice(0, allowedWordCount);
 		const moreToComeMarkUp = `
-			<a href = "/blogPosts/${blogId}" target='_blank'><strong style="color: yellow; font-size: 2rem">...Show More</strong></a>
+			<a href = "/blogPosts/${blogId}" target='_blank'><strong style="color: yellow; font-size: 1.1rem">...Show More</strong></a>
 		`;
 		contentArray.push(moreToComeMarkUp);
 		contentArray[contentArray.length-1];
@@ -354,7 +347,6 @@ const renderPageButtons = (page, numPosts, postsPerPage) => {
 			${createPageButton(page, 'prev', 'hidden')}		
 			${createPageButton(page, 'next')}
 			`
-			// document.querySelector(".btn-inline.results__btn--prev").style.display = none;
 			querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
 	} 
 	else if (page < pages) {
@@ -411,16 +403,20 @@ querySelected.navBar.addEventListener('click', e => {
 	}
 });
 
-querySelected.navBar.addEventListener('keypress', e => {
-	const pageToGoToForm = e.target.closest('.page__input');
-	const pageEntered = pageToGoToForm.value;
-	const key = e.which || e.keyCode;
-	if (pageToGoToForm){
-		if (key === 13) {
-			console.log(pageEntered)
-			e.preventDefault();
-			// getInputtedPage();
-			// clearInputtedValue();
+const pageBoxListener = () => {
+	querySelected.navBar.addEventListener('keypress', e => {
+		const pageToGoToForm = e.target.closest('.page__input');
+		const pageEntered = pageToGoToForm.value;
+		const key = e.which || e.keyCode;
+		if (pageToGoToForm){
+			if (key === 13) {
+				console.log(pageEntered)
+				e.preventDefault();
+				const goToPage = parseInt(pageToGoToForm.dataset.goto, 10);
+				clearPageResultsBeforeLoadingNewPage();
+				renderBlogPagination(blogResult, goToPage);
+				return 
+			}
 		}
-	}
-});
+	});			
+}
