@@ -22,23 +22,10 @@ async function getBlogs() {
 		function postBlogs() {		
 			const blogPosts = data._embedded.blogPosts.reverse();
 			this.blogResult = blogPosts;
-			// renderBlogPagination(blogPosts);
-
-
-			// let nameData;
-			// for (cur of blogPosts) {
-			// // console.log(cur._links.author.href);
-			// 	const url = cur._links.author.href;
-			// 	console.log(url)
-			// 	renderAuthor(url).then(data => {
-			// 		nameData = data;
-			// 		console.log(nameData)
-			// 	});
-				// console.log(cur.url.authorFirstName)
-			// }
+			renderBlogPagination(blogPosts);	
 		}		
 		postBlogs();
-		renderBlogPagination(data._embedded.blogPosts.reverse());	
+		
 		return data;
 	} catch(error) {					
 			console.log(error);
@@ -50,17 +37,10 @@ async function renderAuthor(authorLink) {
 	try {
 		const result = await fetch (authorLink);
 		const data = await result.json();
-		// renderBlogPagination(data);
-		this.firstName = data.authorFirstName;
-		console.log(firstName);
-		this.lastName = data.authorLastName;	
-		// renderBlogPagination(blogPosts)
 		return data;
-	
 	} catch(e) {					
 		console.log(e);
 	}
-	// renderBlogPagination(blogPosts);
 };
 
 //takes in this.blogResult from fetch for all blogPosts returned from fetch
@@ -68,13 +48,11 @@ async function renderAuthor(authorLink) {
 //calculates posts per page
 //calculates current Page
 const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 3) => {
-	// console.log(blogPosts);
 	const start = (page-1) * postsPerPage;
 	const end = page * postsPerPage;
 
 	//each blogPost gets passed in as argument to renderBlogPosts()
 	blogPosts.slice(start, end).forEach(renderBlogPosts);
-	// data.slice(start, end).forEach(renderBlogPosts);
 
 	renderPageButtons(page, blogPosts.length, postsPerPage);
 	renderPageList(page, blogPosts.length, postsPerPage);
@@ -109,15 +87,17 @@ const renderBlogPosts = (blogPost) => {
 	let nameData;
 	renderAuthor(blogPost._links.author.href).then(data => {
 		nameData = data;
-		const T = 'T';
 		//only need to reference edidedDate & editedTime in markup from its variable in splitString();
+		const T = 'T';
 		const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
+
 		const linkSeparator = '/'
 		getIndividualBlogId(blogPost._links.blogPost.href, linkSeparator);
 
 		const spaceSeparator = ' ';
 		renderBlogContentDisplay(blogPost.content, spaceSeparator);
 	
+		//markup will only be rendered once the response is returned from renderAuthor()
 		const markup = `
 			<article class = "blog__entry" id = "entry__one" dataset = "post_1">
 				<div class = "entry__title">
