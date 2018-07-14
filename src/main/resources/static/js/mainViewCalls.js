@@ -9,27 +9,28 @@ const querySelected = {
 	pageButtonSection: document.querySelector('.page-buttons')
 } 
 
-async function getBlogs() {
-	try {
-		const result = await fetch(`/blogPosts`);
-	// .then(result => {
-	// 	if (!(result.ok)){
-	// 		window.location ="http://localhost:8080/notfound";
-	// 		console.log('could not connect');
-	// 	}
-		const data = await result.json();
-		console.log(data)
+
+function getBlogs() {
+	fetch(`/blogPosts`)
+	.then(result => {
+		if (!(result.ok)){
+			window.location ="http://localhost:8080/notfound";
+			console.log('could not connect');
+		}
+		return result.json();
+	})
+	.then(currentBlogs => {		
+		console.log(currentBlogs)
 		function postBlogs() {		
-			const blogPosts = data._embedded.blogPosts.reverse();
+			const blogPosts = currentBlogs._embedded.blogPosts.reverse();
 			this.blogResult = blogPosts;
-			renderBlogPagination(blogPosts);	
+			renderBlogPagination(blogPosts);
 		}		
 		postBlogs();
-		
-		return data;
-	} catch(error) {					
+	})
+	.catch(function(error) {					
 			console.log(error);
-	}
+	})
 };
 getBlogs();
 
