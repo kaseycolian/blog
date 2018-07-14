@@ -21,20 +21,26 @@ async function getBlogs() {
 		console.log(data)
 		function postBlogs() {		
 			const blogPosts = data._embedded.blogPosts.reverse();
+			// const links = data._embedded.blogPosts.content;
+			// console.log(links)
+			// console.log(blogPosts)
 			this.blogResult = blogPosts;
 			// renderBlogPagination(blogPosts);	
 
 
-			for (cur of blogPosts) {
-			// console.log(cur._links.author.href);
-				const url = cur._links.author.href;
-				console.log(url)
-				renderAuthor(url);
-				// console.log(cur.url.authorFirstName)
-			}
+			// const links = blogResult._links.author.href;
+			// console.log(links);	
+
+			// for (cur of blogPosts) {
+			// // console.log(cur._links.author.href);
+			// 	const url = cur._links.author.href;
+			// 	console.log(url)
+			// 	renderAuthor(url, blogPosts);
+			// 	// console.log(cur.url.authorFirstName)
+			// }
 		}		
 		postBlogs();
-		renderBlogPagination(data._embedded.blogPosts.reverse());
+		renderBlogPagination(data._embedded.blogPosts.reverse());	
 		return data;
 	} catch(error) {					
 			console.log(error);
@@ -78,6 +84,7 @@ async function renderAuthor(authorLink, blogPosts) {
 	} catch(e) {					
 		console.log(e);
 	}
+	// renderBlogPagination(blogPosts);
 };
 
 
@@ -93,7 +100,7 @@ const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 3) => {
 
 	//each blogPost gets passed in as argument to renderBlogPosts()
 	blogPosts.slice(start, end).forEach(renderBlogPosts);
-
+	// data.slice(start, end).forEach(renderBlogPosts);
 
 	renderPageButtons(page, blogPosts.length, postsPerPage);
 	renderPageList(page, blogPosts.length, postsPerPage);
@@ -124,7 +131,7 @@ const createPageInputForm = (page, numPosts, postsPerPage) => {
 
 const renderBlogPosts = (blogPost) => {
 	// renderAuthor(blogPost._links.author.href);
-	// console.log(blogPost);
+	console.log(blogPost);
 	const T = 'T';
 	//only need to reference edidedDate & editedTime in markup from its variable in splitString();
 	const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
@@ -134,14 +141,11 @@ const renderBlogPosts = (blogPost) => {
 	renderBlogContentDisplay(blogPost.content, spaceSeparator);
 
 
-	// let nameData;
-	// renderAuthor(blogPost._links.author.href).then(data => {
-	// 	nameData = data;
-	// 	console.log(nameData)
-	// 	const firstName = nameData.authorFirstName;
-	// 	console.log(`firrrr: ${firstName}`);
-	// });
-	// console.log(nameData.firstName);
+	let data;
+	renderAuthor(blogPost._links.author.href).then(data => {
+		nameData = data;
+		console.log(nameData)
+	});
 
 
 	const markup = `
@@ -395,7 +399,6 @@ const renderPageButtons = (page, numPosts, postsPerPage) => {
 const createPageButton = (page, type, display) => `
 	<button class="btn-inline results__btn--${type}" style = "visibility:${display}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
         <img class="search__icon"
-
             src="./images/${type === 'prev' ? 'left-' : 'right-'}arrows.svg">
         </img>   
     </button>
