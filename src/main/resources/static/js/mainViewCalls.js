@@ -9,42 +9,42 @@ const querySelected = {
 	pageButtonSection: document.querySelector('.page-buttons')
 } 
 
-function getBlogs() {
-	fetch(`/blogPosts`)
-	.then(result => {
-		if (!(result.ok)){
-			window.location ="http://localhost:8080/notfound";
-			console.log('could not connect');
-		}
-		return result.json();
-	})
-	.then(currentBlogs => {		
-		console.log(currentBlogs)
-		function postBlogs() {		
-			const blogPosts = currentBlogs._embedded.blogPosts.reverse();
-			this.blogResult = blogPosts;
-			renderBlogPagination(blogPosts);
-
-			//**Trying to return a promise to fetch the author's link. **Having troubles getting to ._links in Array
-			// for (cur of blogPosts) {
-			// console.log(cur._links.author.href);
-			// }
-			// blogPosts.forEach()
-			// const link = blogPosts._links.author.href
-		}		
-		postBlogs();	
-
-		// return fetch()
-	})
-	// .then(currentLinks => {
-	// 	console.log(currentLinks);
-	// 	for (cur of currentLinks){
-	// 		console.log(currentLinks.embedded.blogPosts._links)
+async function getBlogs() {
+	try {
+		const result = await fetch(`/blogPosts`);
+	// .then(result => {
+	// 	if (!(result.ok)){
+	// 		window.location ="http://localhost:8080/notfound";
+	// 		console.log('could not connect');
 	// 	}
-	// })
-	.catch(function(error) {					
+		const data = await result.json();
+		console.log(data)
+		function postBlogs() {		
+			const blogPosts = data._embedded.blogPosts.reverse();
+			// const links = data._embedded.blogPosts.content;
+			// console.log(links)
+			// console.log(blogPosts)
+			this.blogResult = blogPosts;
+			// renderBlogPagination(blogPosts);	
+
+
+			// const links = blogResult._links.author.href;
+			// console.log(links);	
+
+			for (cur of blogPosts) {
+			// console.log(cur._links.author.href);
+				const url = cur._links.author.href;
+				// console.log(url)
+				renderAuthor(url);
+				// console.log(cur.url.authorFirstName)
+			}
+		}		
+		postBlogs();
+		renderBlogPagination(data._embedded.blogPosts.reverse());	
+		return data;
+	} catch(error) {					
 			console.log(error);
-	})
+	}
 };
 getBlogs();
 
@@ -70,12 +70,21 @@ const renderAuthor = authorLink => {
 	})
 };
 
-// const getAuthorsNames = (firstName, lastName) => {
-// 	firstName = this.authorFirstName;
-// 	console.log(authorFirstName);
-// 	lastName = this.authorLastName;
-// 	console.log(authorLastName);
-// }
+// async function renderAuthor(authorLink) {
+// 	try {
+// 		const result = await fetch (authorLink);
+// 		const data = await result.json();
+// 		// renderBlogPagination(data);
+// 		const firstName = data.authorFirstName;
+// 		console.log(firstName);
+// 		const lastName = data.authorLastName;	
+// 		return data;
+	
+// 	} catch(e) {					
+// 		console.log(e);
+// 	}
+// };
+
 
 
 //takes in this.blogResult from fetch for all blogPosts returned from fetch
@@ -88,7 +97,8 @@ const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 3) => {
 	const end = page * postsPerPage;
 
 	//each blogPost gets passed in as argument to renderBlogPosts()
-	blogPosts.slice(start, end).forEach(renderBlogPosts)
+	blogPosts.slice(start, end).forEach(renderBlogPosts);
+	// data.slice(start, end).forEach(renderBlogPosts);
 
 	renderPageButtons(page, blogPosts.length, postsPerPage);
 	renderPageList(page, blogPosts.length, postsPerPage);
@@ -117,7 +127,8 @@ const createPageInputForm = (page, numPosts, postsPerPage) => {
 	querySelected.navBar.insertAdjacentHTML('beforeend', goToPageForm);
 }
 
-const renderBlogPosts = (blogPost, authorNames) => {
+const renderBlogPosts = (blogPost) => {
+	// renderAuthor(blogPost._links.author.href);
 	console.log(blogPost);
 	const T = 'T';
 	//only need to reference edidedDate & editedTime in markup from its variable in splitString();
@@ -127,10 +138,15 @@ const renderBlogPosts = (blogPost, authorNames) => {
 	const spaceSeparator = ' ';
 	renderBlogContentDisplay(blogPost.content, spaceSeparator);
 
-	renderAuthor(blogPost._links.author.href);
-	// console.log(this.authorFirstName)
 
-	const markup =  `
+	// let data;
+	// renderAuthor(blogPost._links.author.href).then(data => {
+	// 	nameData = data});
+		// console.log(nameData)
+	// });
+
+
+	const markup = `
 		<article class = "blog__entry" id = "entry__one" dataset = "post_1">
 			<div class = "entry__title">
 				<div class = "entry__link">
@@ -304,6 +320,12 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 			renderLastPageDisplay();
 		}
 	}
+}
+const getAuthorUrl = (stringToSlice) => {
+	//localhost:8080/blogPosts/22/author
+	//slices off the first 21 characters
+	this.editedLinkUrl = stringToSlice.slice(21, stringToSlice.length);
+	console.log(editedLinkUrl);
 }
 
 //gets blogID from each blog's link (last index in Array made from splitting URL string) - called in renderBlogPost()
