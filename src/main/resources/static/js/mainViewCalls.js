@@ -34,13 +34,13 @@ async function getBlogs() {
 			for (cur of blogPosts) {
 			// console.log(cur._links.author.href);
 				const url = cur._links.author.href;
-				// console.log(url)
-				renderAuthor(url);
+				console.log(url)
+				renderAuthor(url, blogPosts);
 				// console.log(cur.url.authorFirstName)
 			}
 		}		
 		postBlogs();
-		renderBlogPagination(data._embedded.blogPosts.reverse());	
+		// renderBlogPagination(data._embedded.blogPosts.reverse());	
 		return data;
 	} catch(error) {					
 			console.log(error);
@@ -48,42 +48,43 @@ async function getBlogs() {
 };
 getBlogs();
 
-const renderAuthor = authorLink => {
-	fetch(authorLink)
-	.then(authorResult => {
-		if (!(authorResult.ok)){
-		// window.location ="http://localhost:8080/notfound";
-		console.log('could not connect');
-		}
-		return authorResult.json();
-	})
-	.then(authorLinkJson => { 		
-			const firstName = authorLinkJson.authorFirstName;
-			this.authorFirstName = firstName;
-			console.log(authorFirstName);
-			this.authorLastName = authorLinkJson.authorLastName;
-			console.log(authorLastName);
-			// getAuthorsNames();
-	})
-	.catch(function(error) {					
-		console.log(error);
-	})
-};
-
-// async function renderAuthor(authorLink) {
-// 	try {
-// 		const result = await fetch (authorLink);
-// 		const data = await result.json();
-// 		// renderBlogPagination(data);
-// 		const firstName = data.authorFirstName;
-// 		console.log(firstName);
-// 		const lastName = data.authorLastName;	
-// 		return data;
-	
-// 	} catch(e) {					
-// 		console.log(e);
-// 	}
+// const renderAuthor = authorLink => {
+// 	fetch(authorLink)
+// 	.then(authorResult => {
+// 		if (!(authorResult.ok)){
+// 		// window.location ="http://localhost:8080/notfound";
+// 		console.log('could not connect');
+// 		}
+// 		return authorResult.json();
+// 	})
+// 	.then(authorLinkJson => { 		
+// 			const firstName = authorLinkJson.authorFirstName;
+// 			this.authorFirstName = firstName;
+// 			console.log(authorFirstName);
+// 			this.authorLastName = authorLinkJson.authorLastName;
+// 			console.log(authorLastName);
+// 			// getAuthorsNames();
+// 	})
+// 	.catch(function(error) {					
+// 		console.log(error);
+// 	})
 // };
+
+async function renderAuthor(authorLink, blogPosts) {
+	try {
+		const result = await fetch (authorLink);
+		const data = await result.json();
+		// renderBlogPagination(data);
+		this.firstName = data.authorFirstName;
+		console.log(firstName);
+		this.lastName = data.authorLastName;	
+		renderBlogPagination(blogPosts)
+		return data;
+	
+	} catch(e) {					
+		console.log(e);
+	}
+};
 
 
 
