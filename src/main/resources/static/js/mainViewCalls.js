@@ -104,43 +104,41 @@ const createPageInputForm = (page, numPosts, postsPerPage) => {
 }
 
 const renderBlogPosts = (blogPost) => {
-	// renderAuthor(blogPost._links.author.href);
 	console.log(blogPost);
-	const T = 'T';
-	//only need to reference edidedDate & editedTime in markup from its variable in splitString();
-	const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
-	const linkSeparator = '/'
-	getIndividualBlogId(blogPost._links.blogPost.href, linkSeparator);
-	const spaceSeparator = ' ';
-	renderBlogContentDisplay(blogPost.content, spaceSeparator);
-
-
+	
 	let nameData;
 	renderAuthor(blogPost._links.author.href).then(data => {
 		nameData = data;
-		console.log(nameData)
-		console.log(nameData.authorFirstName);
+		const T = 'T';
+		//only need to reference edidedDate & editedTime in markup from its variable in splitString();
+		const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
+		const linkSeparator = '/'
+		getIndividualBlogId(blogPost._links.blogPost.href, linkSeparator);
+
+		const spaceSeparator = ' ';
+		renderBlogContentDisplay(blogPost.content, spaceSeparator);
+	
 		const markup = `
-		<article class = "blog__entry" id = "entry__one" dataset = "post_1">
-			<div class = "entry__title">
-				<div class = "entry__link">
-					<a href = /blogPost.html/${blogId} target='_blank' class = "title__section" ><h2>${blogPost.title}</h2></a>
+			<article class = "blog__entry" id = "entry__one" dataset = "post_1">
+				<div class = "entry__title">
+					<div class = "entry__link">
+						<a href = /blogPost.html/${blogId} target='_blank' class = "title__section" ><h2>${blogPost.title}</h2></a>
+					</div>
 				</div>
-			</div>
-			<div class = "entry__info">
-				<h4>${editedDate} ~ ${editedTime} ~ ${nameData.authorFirstName} ${nameData.authorLastName}~&nbsp</h4>
-				<h4 class = "entry__topic">${blogPost.topic}</h4>
-			</div>
-			<div class = "entry__info__mobile">
-				<h4>${editedDate} ~ ${editedTime}</h4>
-				<h4>${blogPost._links.author.href}</h4>
-				<h4 class = "entry__topic">${blogPost.topic}</h4>
-			</div>
-			<p class = "entry__content">${blogContent}</p>
-			<div class = article__separator>
-			</div>
-		</article>
-	`;				
+				<div class = "entry__info">
+					<h4>${editedDate} ~ ${editedTime} ~ ${nameData.authorFirstName} ${nameData.authorLastName}~&nbsp</h4>
+					<h4 class = "entry__topic">${blogPost.topic}</h4>
+				</div>
+				<div class = "entry__info__mobile">
+					<h4>${editedDate} ~ ${editedTime}</h4>
+					<h4>${blogPost._links.author.href}</h4>
+					<h4 class = "entry__topic">${blogPost.topic}</h4>
+				</div>
+				<p class = "entry__content">${blogContent}</p>
+				<div class = article__separator>
+				</div>
+			</article>
+		`;				
 	querySelected.blogSection.insertAdjacentHTML('beforeend', markup);
 	});
 	// console.log(blogPost.authorFirstName)
