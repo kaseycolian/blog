@@ -9,7 +9,6 @@ const querySelected = {
 	pageButtonSection: document.querySelector('.page-buttons')
 } 
 
-
 function getBlogs() {
 	fetch(`/blogPosts`)
 	.then(result => {
@@ -84,9 +83,7 @@ const createPageInputForm = (page, numPosts, postsPerPage) => {
 }
 
 const renderBlogPosts = (blogPost) => {
-	console.log(blogPost);
-	
-	// let nameData;
+
 	//once this renderAuthor's data is returned THEN do the rest inside {}
 	renderAuthor(blogPost._links.author.href).then(data => {
 		// nameData = data;
