@@ -78,12 +78,13 @@ async function renderAuthor(authorLink, blogPosts) {
 		this.firstName = data.authorFirstName;
 		console.log(firstName);
 		this.lastName = data.authorLastName;	
-		renderBlogPagination(blogPosts)
+		// renderBlogPagination(blogPosts)
 		return data;
 	
 	} catch(e) {					
 		console.log(e);
 	}
+	renderBlogPagination(blogPosts);
 };
 
 
