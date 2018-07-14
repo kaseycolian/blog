@@ -1,14 +1,12 @@
 // import axios from 'axios';
+// import { number } from './test';
 
 const querySelected = {
-	title: document.querySelector('.entry__title'),
-	allTitles: document.querySelectorAll('.title'),
-	blogSection: document.querySelector('section'),
-	header: document.querySelector('.headerH1'),
+	blogSection: document.querySelector('.blog-posts'),
 	pageNumberNavigation: document.querySelector('.inline-pageNumbers'),
 	navBar: document.querySelector('nav'),
-	pageList: document.querySelector('.pageList')
-
+	pageList: document.querySelector('.pageList'),
+	pageButtonSection: document.querySelector('.page-buttons')
 } 
 
 function getBlogs() {
@@ -21,38 +19,29 @@ function getBlogs() {
 		return result.json();
 	})
 	.then(currentBlogs => {		
+		console.log(currentBlogs)
 		function postBlogs() {		
 			const blogPosts = currentBlogs._embedded.blogPosts.reverse();
 			this.blogResult = blogPosts;
 			renderBlogPagination(blogPosts);
 		}		
-		postBlogs();	
-		return currentBlogs;
+		postBlogs();
 	})
 	.catch(function(error) {					
 			console.log(error);
 	})
 };
+getBlogs();
 
-const renderAuthor = blogPost => {
-	fetch(blogPost._links.author.href)
-		.then(authorResult => {
-			if (!(authorResult.ok)){
-			window.location ="http://localhost:8080/notfound";
-			console.log('could not connect');
-			}
-			return authorResult.json();
-		})
-		.then(authorLinkJson => { 			
-			console.log(authorLinkJson)
-			this.authorFirstName = authorLinkJson.authorFirstName;
-			console.log(authorFirstName);
-			this.authorLastName = authorLinkJson.authorLastName;
-			console.log(authorLastName)
-		})
-		.catch(function(error) {					
-			console.log(error);
-		})
+//this has to be an async await function in order for the markup to wait for this response.
+async function renderAuthor(authorLink) {
+	try {
+		const result = await fetch (authorLink);
+		const data = await result.json();
+		return data;
+	} catch(e) {					
+		console.log(e);
+	}
 };
 
 //takes in this.blogResult from fetch for all blogPosts returned from fetch
@@ -60,52 +49,84 @@ const renderAuthor = blogPost => {
 //calculates posts per page
 //calculates current Page
 const renderBlogPagination = (blogPosts, page = 1, postsPerPage = 3) => {
-	// console.log(blogPosts);
 	const start = (page-1) * postsPerPage;
 	const end = page * postsPerPage;
 
 	//each blogPost gets passed in as argument to renderBlogPosts()
 	blogPosts.slice(start, end).forEach(renderBlogPosts);
-	// blogPosts.slice(start, end).forEach(renderAuthor);
 
 	renderPageButtons(page, blogPosts.length, postsPerPage);
 	renderPageList(page, blogPosts.length, postsPerPage);
-	// renderLimitedPageNumbers(blogPosts.length, postsPerPage);
+	createPageInputForm(page, blogPosts.length, postsPerPage);
 };
 
-const renderBlogPosts = blogPost => {
-	console.log(blogPost);
-	const T = 'T';
-	//only need to reference edidedDate & editedTime in markup from its variable in splitString();
-	const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
-	const author = renderAuthor(blogPost);
-	// console.log(authorFirstName)
+const createPageInputForm = (page, numPosts, postsPerPage) => {	
+	const pages = calculatePages(numPosts, postsPerPage);
+	
+	pageBoxListener();
+	console.log(`coming from createInputForm(): ${this.pageEntered}`);
 
-	const markup =  `
-		<article class = "blog__entry" id = "entry__one" dataset = "post_1">
-			<div class = "entry__title">
-				<div class = "entry__link">
-					<a href = ${blogPost._links.blogPost.href} ><h2>${blogPost.title}</h2></a>
+	//returns all pages available - go to pages.length - inputted value.
+	// const allPages = [];
+	// //returns count of all pages in an Array of allPages
+	// for (let i = 0; i < pages; i++) {
+	// 		allPages[i] = pageCount;
+	// 		pageCount++;
+	// }
+
+	const goToPageForm = `
+		<form>	
+			<input type="text" class="page__input" data-goto="${page}" placeholder="#">
+		</form>
+		`;
+	querySelected.navBar.insertAdjacentHTML('beforeend', goToPageForm);
+}
+
+const renderBlogPosts = (blogPost) => {
+
+	//once this renderAuthor's data is returned THEN do the rest inside {}
+	renderAuthor(blogPost._links.author.href).then(data => {
+		// nameData = data;
+		//only need to reference edidedDate & editedTime in markup from its variable in splitString();
+		const T = 'T';
+		const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
+
+		const linkSeparator = '/'
+		getIndividualBlogId(blogPost._links.blogPost.href, linkSeparator);
+
+		const spaceSeparator = ' ';
+		renderBlogContentDisplay(blogPost.content, spaceSeparator);
+	
+		//markup will only be rendered once the response is returned from renderAuthor()'s await
+		//putting markup inside the renderAuthor()'s call gives access to the nameData being returned.
+		const markup = `
+			<article class = "blog__entry" id = "entry__one" dataset = "post_1">
+				<div class = "entry__title">
+					<div class = "entry__link">
+						<a href = /blogPost.html/${blogId} target='_blank' class = "title__section" ><h2>${blogPost.title}</h2></a>
+					</div>
 				</div>
-			</div>
-			<div class = "entry__info">
-				<h4>${editedDate} ~ ${editedTime} ~ ${blogPost._links.author.href.authorFirstName} ~&nbsp</h4>
-				<h4 class = "entry__topic">${blogPost.topic}</h4>
-			</div>
-			<div class = "entry__info__mobile">
-				<h4>${blogPost.creationDate}</h4>
-				<h4>${blogPost._links.author.href}</h4>
-				<h4 class = "entry__topic">${blogPost.topic}</h4>
-			</div>
-			<p class = "entry__content">${blogPost.content}</p>
-			<div class = article__separator>
-			</div>
-		</article>
-	`;				
+				<div class = "entry__info">
+					<h4>${editedDate} ~ ${editedTime} ~ ${data.authorFirstName} ${data.authorLastName}~&nbsp</h4>
+					<h4 class = "entry__topic">${blogPost.topic}</h4>
+				</div>
+				<div class = "entry__info__mobile">
+					<h4>${editedDate} ~ ${editedTime}</h4>
+					<h4>${blogPost._links.author.href}</h4>
+					<h4 class = "entry__topic">${blogPost.topic}</h4>
+				</div>
+				<p class = "entry__content">${blogContent}</p>
+				<div class = article__separator>
+				</div>
+			</article>
+		`;				
 	querySelected.blogSection.insertAdjacentHTML('beforeend', markup);
+	});
 };
 
+//called in renderBlogPagination
 const renderPageList = (page, numPosts, postsPerPage) => {
+
 	let pageCount = 1;
 	const pages = calculatePages(numPosts, postsPerPage);
 	const allPages = [];
@@ -127,12 +148,14 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 		`;		
 		querySelected.navBar.insertAdjacentHTML('afterbegin', firstPageToDisplay);
 	};
+
 	const renderLastPageDisplay = () => {
 		const lastPageDisplay = `
 		<div class = "page__numbers" class = "inactive" data-goto=${lastPage}>[...${lastPage}]</div>
 		`;
 		querySelected.navBar.insertAdjacentHTML('beforeend', lastPageDisplay);
-	};
+	};	
+
 	const renderPageListLoop = () => {
 		if (cur === page ) {
 				const pageNumberDisplay = `
@@ -147,7 +170,6 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 			}
 	};
 
-	//displays all pages if less than 5 total pages
 	if (allPages.length <= 5) { 
 		for (cur of allPages.reverse()) {
 			renderPageListLoop();
@@ -188,20 +210,17 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 				querySelected.navBar.insertAdjacentHTML('afterbegin', mobilePageNumberDisplay);
 				renderFirstPageDisplay();
 				renderLastPageDisplay();
-
 			} else if (mobileView.matches) {
 				console.log(`2nd mobile`);
 				querySelected.navBar.insertAdjacentHTML('afterbegin', mobilePageNumberDisplay);
 				renderLastPageDisplay();
-
 			} else if (page != 4) {
 				querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
 				renderFirstPageDisplay();
 				renderLastPageDisplay();
-			} 
-			 else  {
-			querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
-			renderLastPageDisplay();
+			} else {
+				querySelected.navBar.insertAdjacentHTML('afterbegin', pageNumberDisplay);
+				renderLastPageDisplay();
 			}
 		} else if (page === allPages[allPages.length-4]) {
 			//when pages is 4th to last
@@ -256,6 +275,31 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 		}
 	}
 }
+
+//gets blogID from each blog's link (last index in Array made from splitting URL string) - called in renderBlogPost()
+const getIndividualBlogId = (stringToSplit, separator) => {
+	const arrayOfLinkStrings = stringToSplit.split(separator);
+	this.blogId = arrayOfLinkStrings[arrayOfLinkStrings.length - 1];
+	// console.log(blogId);
+}
+
+//limits amount of words displayed in blog content & adds '...' to posts that are over set limit - called in renderBlogPost()
+const renderBlogContentDisplay = (stringToSplit, separator, allowedWordCount = 200) => {
+	const arrayOfBlogContentWords = stringToSplit.split(separator);
+	if (arrayOfBlogContentWords.length > allowedWordCount) {		
+		const contentArray = arrayOfBlogContentWords.slice(0, allowedWordCount);
+		const moreToComeMarkUp = `
+			<a href = "/blogPosts/${blogId}" target='_blank'><strong style="color: yellow; font-size: 1.1rem">...Show More</strong></a>
+		`;
+		contentArray.push(moreToComeMarkUp);
+		contentArray[contentArray.length-1];
+		this.blogContent = contentArray.join(" ");
+	} else {
+		this.blogContent = stringToSplit;
+	}
+}
+
+//creates formatting for proper date & time of creation. called in renderBlogPost()
 const renderDateAndTime = (stringToSplit, separator) => {
 		 const arrayOfStrings = stringToSplit.split(separator);
 
@@ -265,7 +309,7 @@ const renderDateAndTime = (stringToSplit, separator) => {
 		 //removes the milliseconds
 		 this.editedTime = timeUnedited.substring(0, timeUnedited.length-4);
 
-		 //moves year to end of date
+		 //moves year to end of date by selecting substring elements and declaring in template literal
 		 const monthAndDay = date.substring(5, date.length);
 		 const year = date.substring(0, 4);
 		 this.editedDate = `${monthAndDay}-${year}`;
@@ -276,46 +320,48 @@ const renderPageButtons = (page, numPosts, postsPerPage) => {
 	let pageButton;
 
 	if (page === 1 && pages > 1) {
-		pageButton = 			
-			createPageButton(page, 'next');
-			querySelected.blogSection.insertAdjacentHTML('afterbegin', pageButton);
-	} else if (page < pages) {
 		pageButton = `
+			${createPageButton(page, 'prev', 'hidden')}		
 			${createPageButton(page, 'next')}
+			`
+			querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
+	} 
+	else if (page < pages) {
+		pageButton = `
 			${createPageButton(page, 'prev')}
+			${createPageButton(page, 'next')}			
 		`
-		querySelected.blogSection.insertAdjacentHTML('afterbegin', pageButton);
+		querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
 	} else if (page === pages && page > 1) {
-		pageButton = 
-			createPageButton(page, 'prev');
-			querySelected.blogSection.insertAdjacentHTML('afterbegin', pageButton);
-	}
-	
+		pageButton = `
+			${createPageButton(page, 'prev')}
+			${createPageButton(page, 'next', 'hidden')}	
+			`
+			querySelected.pageButtonSection.insertAdjacentHTML('afterbegin', pageButton);
+	}	
 };
+
 //displays type of button that is passed through and displays page number for next && || previous page
-const createPageButton = (page, type) => `
-	<button class="btn-inline results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
-        <span>Go To Page ${type === 'prev' ? page - 1 : page + 1}</span>
+const createPageButton = (page, type, display) => `
+	<button class="btn-inline results__btn--${type}" style = "visibility:${display}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
         <img class="search__icon"
             src="./images/${type === 'prev' ? 'left-' : 'right-'}arrows.svg">
         </img>   
     </button>
 `;
-
+//clears out blog-post, page numbers, and prev/next buttons before adding them again on new page display
 const clearPageResultsBeforeLoadingNewPage = () => {
-	//clears out the buttons & posts on current page when going to next page
 	querySelected.blogSection.innerHTML = '';
-	//clears out nav pageList for next page's nav pageList
 	querySelected.navBar.innerHTML = '';
-}
+	querySelected.pageButtonSection.innerHTML = '';
+};
 
 const calculatePages = (numPosts, postsPerPage) => {
 	const pages = Math.ceil(numPosts/postsPerPage);
 	return pages;
 };
 
-
-querySelected.blogSection.addEventListener('click', e => {
+querySelected.pageButtonSection.addEventListener('click', e => {
 	const pageButton = e.target.closest('.btn-inline');
 	if (pageButton) {
 		const goToPage = parseInt(pageButton.dataset.goto, 10);
@@ -333,4 +379,20 @@ querySelected.navBar.addEventListener('click', e => {
 	}
 });
 
-getBlogs();
+const pageBoxListener = () => {
+	querySelected.navBar.addEventListener('keypress', e => {
+		const pageToGoToForm = e.target.closest('.page__input');
+		this.pageEntered = pageToGoToForm.value;
+		const key = e.which || e.keyCode;
+		if (pageToGoToForm){
+			if (key === 13) {
+				// console.log(pageEntered)
+				e.preventDefault();
+				const goToPage = parseInt(pageToGoToForm.dataset.goto, 10);
+				clearPageResultsBeforeLoadingNewPage();
+				renderBlogPagination(blogResult, goToPage);
+				// return pageEntered;
+			}
+		}
+	});			
+}

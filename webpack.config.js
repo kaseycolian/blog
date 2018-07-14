@@ -1,14 +1,11 @@
-
-
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
 module.exports = {
 	entry: [
-		'./src/main/resources/js/mainView.js',
-		'./src/main/resources/js/mainViewCalls.js',
-		'./src/main/resources/js/mainViewHandlers.js'
+		'./src/main/resources/static/js/mainViewCalls.js'
+		// './src/main/resources/static/js/test.js'
 	],
 	output: {
 		path: path.resolve(__dirname, 'dist'),
