@@ -34,6 +34,7 @@ function getBlogs() {
 };
 getBlogs();
 
+//this has to be an async await function in order for the markup to wait for this response.
 async function renderAuthor(authorLink) {
 	try {
 		const result = await fetch (authorLink);
@@ -85,9 +86,10 @@ const createPageInputForm = (page, numPosts, postsPerPage) => {
 const renderBlogPosts = (blogPost) => {
 	console.log(blogPost);
 	
-	let nameData;
+	// let nameData;
+	//once this renderAuthor's data is returned THEN do the rest inside {}
 	renderAuthor(blogPost._links.author.href).then(data => {
-		nameData = data;
+		// nameData = data;
 		//only need to reference edidedDate & editedTime in markup from its variable in splitString();
 		const T = 'T';
 		const dateAndTime = renderDateAndTime(blogPost.creationDate, T);
@@ -98,7 +100,8 @@ const renderBlogPosts = (blogPost) => {
 		const spaceSeparator = ' ';
 		renderBlogContentDisplay(blogPost.content, spaceSeparator);
 	
-		//markup will only be rendered once the response is returned from renderAuthor()
+		//markup will only be rendered once the response is returned from renderAuthor()'s await
+		//putting markup inside the renderAuthor()'s call gives access to the nameData being returned.
 		const markup = `
 			<article class = "blog__entry" id = "entry__one" dataset = "post_1">
 				<div class = "entry__title">
@@ -107,7 +110,7 @@ const renderBlogPosts = (blogPost) => {
 					</div>
 				</div>
 				<div class = "entry__info">
-					<h4>${editedDate} ~ ${editedTime} ~ ${nameData.authorFirstName} ${nameData.authorLastName}~&nbsp</h4>
+					<h4>${editedDate} ~ ${editedTime} ~ ${data.authorFirstName} ${data.authorLastName}~&nbsp</h4>
 					<h4 class = "entry__topic">${blogPost.topic}</h4>
 				</div>
 				<div class = "entry__info__mobile">
@@ -122,10 +125,6 @@ const renderBlogPosts = (blogPost) => {
 		`;				
 	querySelected.blogSection.insertAdjacentHTML('beforeend', markup);
 	});
-	// console.log(blogPost.authorFirstName)
-
-
-	
 };
 
 //called in renderBlogPagination
@@ -279,12 +278,6 @@ const renderPageList = (page, numPosts, postsPerPage) => {
 		}
 	}
 }
-// const getAuthorUrl = (stringToSlice) => {
-// 	//localhost:8080/blogPosts/22/author
-// 	//slices off the first 21 characters
-// 	this.editedLinkUrl = stringToSlice.slice(21, stringToSlice.length);
-// 	console.log(editedLinkUrl);
-// }
 
 //gets blogID from each blog's link (last index in Array made from splitting URL string) - called in renderBlogPost()
 const getIndividualBlogId = (stringToSplit, separator) => {
